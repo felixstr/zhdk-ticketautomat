@@ -120,8 +120,18 @@ var View_via = {
 		var result = '';
 		
 		result += "\
-			<section id='content'>
-			<button id='summary_pay'>Bezahlen</button>\
+			<section id='content'>\
+		";
+		
+		result += "\
+			<button id='via_1' class='current' >Via 1</button>\
+			<button id='via_1'>Via 2</button>\
+			<button id='via_1'>Via 3</button>\
+			<button id='via_info'>Information zu den Vias</button>\
+		";
+		
+		result += "\
+			</section>\
 		";
 		
 		return result;
