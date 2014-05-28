@@ -118,16 +118,27 @@ var View_start = {
 var View_via = {
 	render: function() {
 		var result = '';
-		
+		var current_route = Controller.get_route();
 		result += "\
-			<section id='content'>\
+			<section class='content'>\
+				<section class='ticket_selection'>\
+					<h2>Ihre Auswahl</h2>\
+					<div class='box'>\
+						Zürich HB<br />"+current_route.name+"\
+					</div>\
+					<div class='box'>\
+						via <span class='current_via'>"+current_route.via[Controller.selected_options.via]+"</span>\
+					</div>\
+				</selection>\
 		";
 		
+		
+		$(current_route.via).each(function(i, item) {
+			result += "<button id='via_"+i+"' class='via_button "+(Controller.selected_options.via == i ? 'selected' : '')+"'>"+item+"</button>";
+		});
+		
 		result += "\
-			<button id='via_1' class='current' >Via 1</button>\
-			<button id='via_1'>Via 2</button>\
-			<button id='via_1'>Via 3</button>\
-			<button id='via_info'>Information zu den Vias</button>\
+				<button id='via_info'>Information zu den Vias</button>\
 		";
 		
 		result += "\
@@ -140,6 +151,11 @@ var View_via = {
 	render_information: function() { return '';	},
 	
 	observe: function() {
+		Controller.radio_button($('.via_button'), function(selected_i) {
+			Controller.selected_options.via = selected_i;
+			$('span.current_via').text(Controller.get_route().via[Controller.selected_options.via]);
+		})
+	
 		Mobile.observe_button($('#via_next'), function() {
 			Controller.next_screen();
 		});

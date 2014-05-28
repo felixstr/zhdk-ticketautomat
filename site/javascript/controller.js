@@ -1,5 +1,5 @@
 var Controller = {
-	current_screen: 'start',
+	current_screen: 'via',
 	screens: ['start', 'via', 'option', 'summary', 'pay'],
 	
 	route: {
@@ -12,7 +12,7 @@ var Controller = {
 	},
 	
 	selected_options: {
-		destination: '',
+		destination: 'brig',
 		via: 0,
 		sbb_class: 2,
 		back: false
@@ -86,5 +86,20 @@ var Controller = {
 		});
 		
 		return result;
+	},
+	
+	get_route: function() {
+		return this.route[this.selected_options.destination];
+	},
+	
+	radio_button: function($elements, callback) {
+		$elements.each(function(i, item){
+			$(item).click(function() {
+				$elements.removeClass('selected');
+				$(item).addClass('selected');
+				callback(i);
+			});
+			
+		});
 	}
 }
