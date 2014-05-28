@@ -1,0 +1,190 @@
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	-moz-box-sizing: border-box; 
+	box-sizing: border-box; 
+	-webkit-font-smoothing: antialiased;
+	-webkit-user-select: none;
+}
+
+body {
+	background: #EE0000;
+}
+body,button {
+	font-family: "Helvetica Neue", helvetica, sans-serif;
+}
+
+.clear { clear:both; }
+
+/* container */
+section#wrapper {
+	position: relative;
+	margin: 0 auto;
+	width: 1024px;
+	height: 768px;
+
+	overflow: hidden;
+}
+
+header,
+footer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 80px;
+	background: white;
+	z-index: 100;
+}
+footer {
+	bottom: 0;
+	top: auto;
+}
+
+section#slideContainer {
+	position: absolute;
+	width: 100%;
+	
+	-webkit-transform: translate3d(0,-768px,0);
+}
+section#slideContainer section.screen {
+	height: 768px;
+	background: #F1F1F1;
+	padding: 80px 0;
+}
+
+/*
+section#slideContainer section#screen_1 { background: aqua; }
+section#slideContainer section#screen_2 { background: fuchsia; }
+*/
+
+section#slideRightContainer {
+	width: 100%;
+	background: purple;
+	height: 100%;
+	z-index: 101;
+	position: absolute;
+	
+	-webkit-transform: translate3d(1024px,0,0);
+}
+
+/* transition */
+section#slideRightContainer,
+body.slideDown section#slideContainer,
+body.slideUp section#slideContainer {
+	-webkit-transition: -webkit-transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* slide */
+body.slideDown section#slideContainer {
+	-webkit-transform: translate3d(0,-1536px,0);
+}
+body.slideUp section#slideContainer {
+	-webkit-transform: translate3d(0,0,0);
+}
+body.slideInRight section#slideRightContainer {
+	-webkit-transform: translate3d(0,0,0);
+}
+
+/* button */
+button {
+	padding: 15px;
+	background: blue;
+	border: none;
+	border-radius: 5px;
+	font-size: 18px;
+	color: white;
+	background: #666666;
+	box-shadow: 0px 3px 0px black;
+	
+	cursor: pointer;
+}
+button.active,
+button.touch {
+	background: #272829;
+	box-shadow: none;
+}
+
+/* text */
+h1 {
+	font-size: 25px;
+	margin-bottom: 10px;
+}
+
+/* static nav */
+nav {
+	position: absolute;
+	right: 20px;
+	top: 100px;
+	bottom: 100px;
+	width: 120px;
+	background: white;
+	border-radius: 5px;
+}
+nav button#static_back {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+}
+nav button#static_next {
+	position: absolute;
+	bottom: 15px;
+	left: 15px;
+}
+
+/* screen: start */
+section#start_wrapper {
+	background: url(../image/bg_start.jpg);
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+section#tabs {
+	position: absolute;
+	width: 90%;
+	background: white;
+	margin: 5%;
+	border-radius: 5px;
+	overflow: hidden;
+}
+section#tabs ul {
+	width: 100%;
+	float: left;
+}
+section#tabs ul li {
+	float: left;
+	width: 33.4%;
+	border-left: 1px solid white;
+}
+section#tabs ul li:first-child {
+	border:none;
+}
+section#tabs ul li button {
+	width: 100%;
+	text-align: left;
+	background: #666666;
+	font-size: 20px;
+	padding: 15px;
+	color: white;
+	border-radius: 0;
+	box-shadow: none;
+}
+section#tabs ul li.current button {
+	background: #003399;
+}
+section#tabs ul li button.touch {
+	background: #003399;
+}
+section#tabs .tab {
+	padding: 15px;
+	float: left;
+}
+
+#tabs .tab {
+	display: none;
+}
+#tabs .current {
+	display: block;
+}
