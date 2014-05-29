@@ -10,6 +10,7 @@ var Mobile = {
 	},
 	
 	observe_button: function(element, callback) {
+		// console.log('element', element);
 		if (this.mobile) {			
 			var startX = 0;
 			var startY = 0;

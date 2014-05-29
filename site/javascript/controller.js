@@ -1,18 +1,32 @@
 var Controller = {
-	current_screen: 'option',
+	current_screen: 'start',
 	screens: ['start', 'via', 'option', 'date', 'summary', 'pay'],
 	
 	route: {
 		'brig': {
 			'name': 'Brig',
-			'via': ['Olten-Bern-Lötschberg', 'Göschenen', 'Olten-Bern oder Biel-Lausanne'],
-			'price_1': 55.50,
-			'price_2': 30.50
+			'via': [
+				{
+					'name': 'Olten-Bern-Lötschberg',
+					'price_1': 147.00,
+					'price_2': 84.00
+				},
+				{
+					'name': 'Göschenen',
+					'price_1': 133.00,
+					'price_2': 76.00
+				},
+				{
+					'name': 'Olten-Bern oder Biel-Lausanne',
+					'price_1': 174.00,
+					'price_2': 99.00
+				}
+			]
 		}
 	},
 	
-	selected_options: {
-		destination: 'brig',
+	selected_options_default: {
+		destination: '',
 		via: 0,
 		ticket_halbtax: 0,
 		ticket_normal: 0,
@@ -20,7 +34,11 @@ var Controller = {
 		back: false
 	},
 	
+	selected_options: {},
+	
 	init: function() {
+		this.selected_options = this.selected_options_default;
+		this.selected_options = jQuery.extend(true, {}, this.selected_options_default);
 		this.render_view(this.current_screen, 'screen_active');
 				
 		// verhindert das scrollen auf dem ipad
@@ -29,8 +47,16 @@ var Controller = {
 		}
 	},
 	
+	reset: function() {
+		this.current_screen = 'start';
+		this.selected_options = jQuery.extend(true, {}, this.selected_options_default);
+		console.log(this.selected_options);
+		this.render_view(this.current_screen, 'screen_active');
+	},
+	
 	next_screen: function() {
 		var next_screen_name = this.get_next_screen_name();
+		console.log(next_screen_name);
 		this.current_screen = next_screen_name;
 		this.render_view(next_screen_name, 'screen_bottom');
 		ScreenController.slideDown();
@@ -60,8 +86,11 @@ var Controller = {
 		view_object.observe();	
 		
 		var static_site_object = View.get('static');
-		if ($('#staticContainer').empty()) {
+		if ($('#staticContainer').html() == '') {
 			$('#staticContainer').html(static_site_object.render());
+			$('footer').html(static_site_object.render_footer());
+			$('header').html(static_site_object.render_header());
+			static_site_object.controll_static();
 		}
 		static_site_object.controll();
 	},
@@ -94,9 +123,13 @@ var Controller = {
 		return this.route[this.selected_options.destination];
 	},
 	
+	get_step_nr: function() {
+		return $.inArray(this.current_screen, this.screens)+1;
+	},
+	
 	radio_button: function($elements, callback) {
 		$elements.each(function(i, item){
-			$(item).click(function() {
+			Mobile.observe_button($(item), function() {
 				$elements.removeClass('selected');
 				$(item).addClass('selected');
 				callback(i);
@@ -120,5 +153,30 @@ var Controller = {
 			$element.find('div.number').text(count);
 			callback(count);
 		});
+	},
+	
+	get_total: function() {
+		var route = this.get_route();
+		var via = route.via[this.selected_options.via];
+		var price = {
+			chf: 0,
+			euro: 0
+		};
+		if (this.selected_options.sbb_class == 1) {
+			price.chf += (this.selected_options.ticket_halbtax*via.price_1)/2;
+			price.chf += (this.selected_options.ticket_normal*via.price_1);
+			
+		} else {
+			price.chf += (this.selected_options.ticket_halbtax*via.price_2)/2;
+			price.chf += (this.selected_options.ticket_normal*via.price_2);
+		}
+
+		if (this.selected_options.back) {
+			price.chf *= 2;
+		}
+		
+		price.euro = (price.chf * 0.819).toFixed(2);
+		price.chf = (price.chf).toFixed(2);
+		return price;
 	}
 }
