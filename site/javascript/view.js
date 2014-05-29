@@ -80,10 +80,18 @@ var View_start = {
 	
 	render_information: function() {
 		var result = "\
-			<button id='start_keyboard_close'>schliessen</button>\
-			<button id='start_keyboard_brig'>Brig</button>\
+			<button id='start_information_close'>schliessen</button>\
 		";
 			
+		return result;
+	},
+	
+	render_tool: function() {
+		var result = "\
+			<button id='start_keyboard_close'>schliessen</button>\
+			<button id='start_keyboard_brig'>Brig</button>\
+			<button id='start_keyboard_davos'>Davos Platz</button>\
+		";
 		
 		return result;
 	},
@@ -104,18 +112,31 @@ var View_start = {
 		Mobile.observe_button($('#start_next'), function() {
 			Controller.next_screen();
 		});
-		Mobile.observe_button($('#start_destination'), function() {
-			Controller.show_information();
+		
+		
+		Mobile.observe_button($('#start_information_close'), function() {
+			Controller.hide_information();
 		});
 		
+		Mobile.observe_button($('#start_destination'), function() {
+			Controller.show_information('tool');
+		});
 		Mobile.observe_button($('#start_keyboard_brig'), function() {
 			Controller.selected_options.destination = 'brig';
+			Controller.selected_options.via = 0;
+			Controller.render_view('start', 'screen_active');
+			Controller.hide_information();
+		});
+		Mobile.observe_button($('#start_keyboard_davos'), function() {
+			Controller.selected_options.destination = 'davos';
+			Controller.selected_options.via = 0;
 			Controller.render_view('start', 'screen_active');
 			Controller.hide_information();
 		});
 		Mobile.observe_button($('#start_keyboard_close'), function() {
 			Controller.hide_information();
 		});
+		
 	}
 	
 }
@@ -137,7 +158,8 @@ var View_via = {
 					<div class='box'>\
 						via <span class='current_via'>"+current_route.via[Controller.selected_options.via].name+"</span>\
 					</div>\
-				</selection>\
+				</section>\
+				<section class='content_right'>\
 		";
 		
 		
@@ -146,8 +168,9 @@ var View_via = {
 		});
 		
 		result += "\
-				<button id='via_info'>Information zu den Vias</button>\
-				<button id='via_different'>Anders Via wählen</button>\
+					<button id='via_info'>Information zu den Vias</button>\
+					<button id='via_different'>Anders Via wählen</button>\
+				</section>\
 		";
 		
 		result += "\
@@ -157,10 +180,18 @@ var View_via = {
 		return result;
 	},
 	
-	render_information: function() { 
+	render_tool: function() { 
 		var result = 'via screen';
 		result += "\
-				<button id='via_info_back'>Zurück</button>\
+				<button id='via_tool_back'>Schliessen</button>\
+		";
+		return result;
+	},
+	
+	render_information: function() { 
+		var result = 'via help';
+		result += "\
+				<button id='via_info_back'>Schliessen</button>\
 		";
 		return result;	
 	},
@@ -172,9 +203,12 @@ var View_via = {
 		});
 		
 		Mobile.observe_button($('#via_info'), function() {
-			Controller.show_information();
+			Controller.show_information('tool');
 		});
 		Mobile.observe_button($('#via_info_back'), function() {
+			Controller.hide_information();
+		});
+		Mobile.observe_button($('#via_tool_back'), function() {
 			Controller.hide_information();
 		});
 		
@@ -216,6 +250,7 @@ var View_option = {
 						<div class='cart_total_euro'>€ <span>"+Controller.get_total().euro+"</span></div>\
 					</div>\
 				</section>\
+				<section class='content_right'>\
 		";
 		
 		
@@ -243,6 +278,7 @@ var View_option = {
 		";
 		
 		result += "\
+				</section>\
 			</section>\
 		";
 		
@@ -250,6 +286,7 @@ var View_option = {
 	},
 	
 	render_information: function() { return '';	},
+	render_tool: function() { return ''; },
 	
 	observe: function() {
 		if (Controller.selected_options.ticket_halbtax == 0) {
@@ -383,6 +420,7 @@ var View_date = {
 						<div class='cart_total_euro'>€ <span>"+Controller.get_total().euro+"</span></div>\
 					</div>\
 				</section>\
+				<section class='content_right'>\
 		";
 		
 		
@@ -394,6 +432,7 @@ var View_date = {
 		";
 		
 		result += "\
+				</section>\
 			</section>\
 		";
 		
@@ -401,10 +440,8 @@ var View_date = {
 	},
 	
 	render_information: function() { return '';	},
-	
-	observe: function() {
-		
-	}
+	render_tool: function() { return ''; },
+	observe: function() {}
 	
 }
 
@@ -421,6 +458,7 @@ var View_summary = {
 	},
 	
 	render_information: function() { return '';	},
+	render_tool: function() { return ''; },
 	
 	observe: function() {
 		Mobile.observe_button($('#summary_pay'), function() {
@@ -443,6 +481,7 @@ var View_pay = {
 	},
 	
 	render_information: function() { return '';	},
+	render_tool: function() { return ''; },
 	
 	observe: function() {
 		Mobile.observe_button($('#pay_cancel'), function() {
@@ -487,6 +526,11 @@ var View_static = {
 		result = "\
 		    <button id='static_cancel'>Abbrechen</button>\
 		    <button id='static_help'>Hilfe</button>\
+		    <div id='language'>\
+		    	<button>FR</button>\
+		    	<button>IT</button>\
+		    	<button>EN</button>\
+		    </div>\
 		";
 		return result;
 	},
@@ -524,7 +568,7 @@ var View_static = {
 			Controller.reset();
 		});
 		Mobile.observe_button($('#static_help'), function() {
-			Controller.show_information();
+			Controller.show_information('information');
 		});
 		
 		
@@ -561,10 +605,16 @@ var View_static = {
 			$('#static_cancel').hide();
 		}
 		
-		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary']) > -1) {
+		if ($.inArray(Controller.current_screen, ['start', 'via', 'option', 'date', 'summary']) > -1) {
 			$('#static_help').show();
 		} else {
 			$('#static_help').hide();
+		}
+		
+		if (Controller.current_screen == 'start') {
+			$('#language').show();
+		} else {
+			$('#language').hide();
 		}
 		
 		this.handle_next_button();
@@ -599,6 +649,7 @@ var View_error = {
 	},
 	
 	render_information: function() { return '';	},
+	render_tool: function() { return ''; },
 	
 	observe: function() {}
 }

@@ -22,6 +22,21 @@ var Controller = {
 					'price_2': 99.00
 				}
 			]
+		},
+		'davos': {
+			'name': 'Davos Platz',
+			'via': [
+				{
+					'name': 'Landquart',
+					'price_1': 93.00,
+					'price_2': 53.00
+				},
+				{
+					'name': 'Rorschach-Landquart',
+					'price_1': 125.00,
+					'price_2': 71.00
+				}
+			]
 		}
 	},
 	
@@ -56,7 +71,6 @@ var Controller = {
 	
 	next_screen: function() {
 		var next_screen_name = this.get_next_screen_name();
-		console.log(next_screen_name);
 		this.current_screen = next_screen_name;
 		this.render_view(next_screen_name, 'screen_bottom');
 		ScreenController.slideDown();
@@ -69,7 +83,10 @@ var Controller = {
 		ScreenController.slideUp();
 	},
 	
-	show_information: function() {
+	show_information: function(type) {
+		console.log(type);
+		$('#slideRightContainer div').hide();
+		$('#slideRightContainer #'+type).show();
 		ScreenController.slideInRight();
 	},
 	
@@ -81,8 +98,9 @@ var Controller = {
 		// console.log(View.get(screen_name).render());
 		var view_object = View.get(screen_name);
 		$('.'+screen_container_class).html(view_object.render());
-		$('#slideRightContainer').html('');
-		$('#slideRightContainer').html(view_object.render_information());
+		$('#slideRightContainer div').html('');
+		$('#slideRightContainer div#tool').html(view_object.render_tool());
+		$('#slideRightContainer div#information').html(view_object.render_information());
 		view_object.observe();	
 		
 		var static_site_object = View.get('static');
