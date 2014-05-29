@@ -1,6 +1,6 @@
 var Controller = {
-	current_screen: 'via',
-	screens: ['start', 'via', 'option', 'summary', 'pay'],
+	current_screen: 'option',
+	screens: ['start', 'via', 'option', 'date', 'summary', 'pay'],
 	
 	route: {
 		'brig': {
@@ -14,6 +14,8 @@ var Controller = {
 	selected_options: {
 		destination: 'brig',
 		via: 0,
+		ticket_halbtax: 0,
+		ticket_normal: 0,
 		sbb_class: 2,
 		back: false
 	},
@@ -100,6 +102,23 @@ var Controller = {
 				callback(i);
 			});
 			
+		});
+	},
+	
+	counter_element: function($element, callback) {
+		var count = $element.find('div.number').text();
+		
+		Mobile.observe_button($element.find('button.decrease'), function() {
+			if (count > 0){
+				count--;
+				$element.find('div.number').text(count);
+				callback(count);
+			}
+		});
+		Mobile.observe_button($element.find('button.increase'), function() {
+			count++;
+			$element.find('div.number').text(count);
+			callback(count);
 		});
 	}
 }

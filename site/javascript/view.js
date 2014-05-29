@@ -12,6 +12,9 @@ var View = {
 			case 'option': 
 				result = View_option;
 			break;
+			case 'date': 
+				result = View_date;
+			break;
 			case 'summary': 
 				result = View_summary;
 			break;
@@ -139,6 +142,7 @@ var View_via = {
 		
 		result += "\
 				<button id='via_info'>Information zu den Vias</button>\
+				<button id='via_different'>Anders Via wählen</button>\
 		";
 		
 		result += "\
@@ -148,14 +152,27 @@ var View_via = {
 		return result;
 	},
 	
-	render_information: function() { return '';	},
+	render_information: function() { 
+		var result = 'via screen';
+		result += "\
+				<button id='via_info_back'>Zurück</button>\
+		";
+		return result;	
+	},
 	
 	observe: function() {
 		Controller.radio_button($('.via_button'), function(selected_i) {
 			Controller.selected_options.via = selected_i;
 			$('span.current_via').text(Controller.get_route().via[Controller.selected_options.via]);
-		})
-	
+		});
+		
+		Mobile.observe_button($('#via_info'), function() {
+			Controller.show_information();
+		});
+		Mobile.observe_button($('#via_info_back'), function() {
+			Controller.hide_information();
+		});
+		
 		Mobile.observe_button($('#via_next'), function() {
 			Controller.next_screen();
 		});
@@ -171,7 +188,94 @@ var View_via = {
 */
 var View_option = {
 	render: function() {
-		var result = 'option';
+		var result = '';
+		var current_route = Controller.get_route();
+		result += "\
+			<section class='content'>\
+				<section class='ticket_selection'>\
+					<h2>Ihre Auswahl</h2>\
+					<div class='box'>\
+						Zürich HB<br />"+current_route.name+"\
+					</div>\
+					<div class='box'>\
+						via <span class='current_via'>"+current_route.via[Controller.selected_options.via]+"</span>\
+					</div>\
+					<div class='box'>\
+						<div class='ticket_halbtax'><span class='ticket_halbtax_count'>"+Controller.selected_options.ticket_halbtax+"</span> x Halbtax / Kind</div>\
+						<div class='ticket_normal'><span class='ticket_normal_count'>"+Controller.selected_options.ticket_normal+"</span> x Erwachsen</div>\
+					</div>\
+				</section>\
+		";
+		
+		
+		result += "\
+				<div class='group_box ticket_count_halbtax_box'>\
+					<div class='number ticket_halbtax_input'>"+Controller.selected_options.ticket_halbtax+"</div>\
+					<button class='decrease' id='decrease_halbtax'>-</button>\
+					<button class='increase' id='incerase_halbtax'>+</button>\
+				</div>\
+				<div class='group_box ticket_count_normal_box'>\
+					<div class='number ticket_normal_input'>"+Controller.selected_options.ticket_normal+"</div>\
+					<button class='decrease' id='decrease_normal'>-</button>\
+					<button class='increase' id='incerase_normal'>+</button>\
+				</div>\
+		";
+		
+		result += "\
+			</section>\
+		";
+		
+		return result;
+	},
+	
+	render_information: function() { return '';	},
+	
+	observe: function() {
+		if (Controller.selected_options.ticket_halbtax == 0) {
+			$('.ticket_halbtax').hide();
+		}
+		if (Controller.selected_options.ticket_normal == 0) {
+			$('.ticket_normal').hide();
+		}
+		
+		
+		Controller.counter_element($('.ticket_count_halbtax_box'), function(count) {
+			Controller.selected_options.ticket_halbtax = count;
+			
+			$('span.ticket_halbtax_count').text(Controller.selected_options.ticket_halbtax);
+
+			if (Controller.selected_options.ticket_halbtax <= 0) {
+				$('.ticket_halbtax').hide();
+			} else {
+				$('.ticket_halbtax').show();
+			}
+		});
+		
+		
+		Controller.counter_element($('.ticket_count_normal_box'), function(count) {
+			Controller.selected_options.ticket_normal = count;
+			
+			$('span.ticket_normal_count').text(Controller.selected_options.ticket_normal);
+			
+			if (Controller.selected_options.ticket_normal <= 0) {
+				$('.ticket_normal').hide();
+			} else {
+				$('.ticket_normal').show();
+			}
+		});
+	}
+	
+	
+	
+	
+}
+
+/**
+* VIEW_OPTION
+*/
+var View_date = {
+	render: function() {
+		var result = 'date';
 		return result;
 	},
 	
@@ -188,7 +292,7 @@ var View_option = {
 */
 var View_summary = {
 	render: function() {
-		var result = 'summary';
+		var result = 'summary 123';
 		result += "\
 			<button id='summary_pay'>Bezahlen</button>\
 		";
@@ -248,7 +352,7 @@ var View_static = {
 	},
 		
 	controll: function() {
-		if ($.inArray(Controller.current_screen, ['via', 'option']) > -1) {
+		if ($.inArray(Controller.current_screen, ['via', 'option', 'date']) > -1) {
 			$('nav').show();
 		} else if (Controller.current_screen == 'summary') {
 			$('nav').show();
