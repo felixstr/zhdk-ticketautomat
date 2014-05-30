@@ -42,10 +42,25 @@ var Controller = {
 	
 	destinations: [
 
+		{
+			key: 'bern',
+			name: 'Bern'
+		},
+
+
+		{
+			key: 'basel',
+			name: 'Basel'
+		},
 
 		{
 			key: 'baden',
 			name: 'Baden'
+		},
+
+		{
+			key: 'bellinzona',
+			name: 'Bellinzona'
 		},
 
 		{
@@ -58,17 +73,59 @@ var Controller = {
 			name: 'Bad Ragaz'
 		},
 
-
+		{
+			key: 'brienz',
+			name: 'Brienz'
+		},
+		
+		{
+			key: 'brienz-west',
+			name: 'Brienz-West'
+		},
+		
+		{
+			key: 'brienzwiler',
+			name: 'Brienzwiler'
+		},
 		
 		{
 			key: 'brig',
 			name: 'Brig'
 		},
 
+		{
+			key: 'brüttelen',
+			name: 'Brüttelen'
+		},
 
 		{
-			key: 'davos',
+			key: 'bubikon',
+			name: 'Bubikon'
+		},
+		
+		{
+			key: 'buelach',
+			name: 'Bülach'
+		},
+
+		{
+			key: 'davos-dorf',
+			name: 'Davos Dorf'
+		}
+
+		{
+			key: 'davos-platz',
 			name: 'Davos Platz'
+		}
+		
+		{
+			key: 'dietikon',
+			name: 'Dietikon'
+		}
+		
+		{
+			key: 'disentis-muster',
+			name: 'Disentis/Mustér'
 		}
 	],
 	
