@@ -41,10 +41,16 @@ var Controller = {
 	},
 	
 	destinations: [
+
+
+
+
 		{
 			key: 'brig',
 			name: 'Brig'
 		},
+
+
 		{
 			key: 'davos',
 			name: 'Davos Platz'
