@@ -215,6 +215,10 @@ var View_start = {
 				} else {
 					$('.keyboard_top .result').show();
 					$('.keyboard_top .top_destination').hide();
+					
+					// result suggestions
+					var suggestions = Controller.get_suggestions($('.keyboard_top .textfield .input').text());
+					console.log(suggestions);
 				}
 			});
 		});

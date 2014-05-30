@@ -285,5 +285,9 @@ var Controller = {
 		price.euro = (price.chf * 0.819).toFixed(2);
 		price.chf = (price.chf).toFixed(2);
 		return price;
+	},
+	
+	get_suggestions: function(input) {
+		
 	}
 }
