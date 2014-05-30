@@ -88,9 +88,58 @@ var View_start = {
 	
 	render_tool: function() {
 		var result = "\
-			<button id='start_keyboard_close'>schliessen</button>\
-			<button id='start_keyboard_brig'>Brig</button>\
-			<button id='start_keyboard_davos'>Davos Platz</button>\
+			<section class='keyboard_top'>\
+				<h1>Zielort bitte eingeben</h1>\
+				<div class='textfield'><span>|</span></div>\
+				<div class='top_destination'>\
+					<h3>Am häufigsten benutzte Zielorte</h3>\
+					<button id='start_keyboard_brig'>Brig</button>\
+					<button id='start_keyboard_davos'>Davos Platz</button>\
+					<button>Bern</button>\
+					<button>Basel</button>\
+					<button>Luzern</button>\
+				</div>\
+			</section>\
+			<section class='keyboard_bottom'>\
+				<div class='row row_1'>\
+					<button>Q</button>\
+					<button>W</button>\
+					<button>E</button>\
+					<button>R</button>\
+					<button>T</button>\
+					<button>Z</button>\
+					<button>U</button>\
+					<button>I</button>\
+					<button>O</button>\
+					<button>P</button>\
+				</div>\
+				<div class='row row_2'>\
+					<button>A</button>\
+					<button>S</button>\
+					<button>D</button>\
+					<button>F</button>\
+					<button>G</button>\
+					<button>H</button>\
+					<button>J</button>\
+					<button>K</button>\
+					<button>L</button>\
+				</div>\
+				<div class='row row_3'>\
+					<button>Y</button>\
+					<button>X</button>\
+					<button>C</button>\
+					<button>V</button>\
+					<button>B</button>\
+					<button>N</button>\
+					<button>M</button>\
+					<button>.</button>\
+					<button>del</button>\
+				</div>\
+				<div class='row row_4'>\
+					<button>Leerzeichen</button>\
+				</div>\
+				<button id='start_keyboard_close'>Abbrechen</button>\
+			</section>\
 		";
 		
 		return result;

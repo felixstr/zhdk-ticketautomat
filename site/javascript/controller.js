@@ -85,8 +85,8 @@ var Controller = {
 	
 	show_information: function(type) {
 		console.log(type);
-		$('#slideRightContainer div').hide();
-		$('#slideRightContainer #'+type).show();
+		$('#slideRightContainer > div').hide();
+		$('#slideRightContainer > #'+type).show();
 		ScreenController.slideInRight();
 	},
 	
