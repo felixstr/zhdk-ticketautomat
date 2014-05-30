@@ -43,8 +43,16 @@ var Controller = {
 	destinations: [
 
 
+		{
+			key: 'baden',
+			name: 'Baden'
+		},
 
-
+		{
+			key: 'baar',
+			name: 'Baar'
+		},
+		
 		{
 			key: 'brig',
 			name: 'Brig'
