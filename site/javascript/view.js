@@ -93,11 +93,13 @@ var View_start = {
 				<div class='textfield'><span class='input'></span><span class='line'>|</span></div>\
 				<div class='top_destination'>\
 					<h3>Am häufigsten benutzte Zielorte</h3>\
-					<button id='start_keyboard_brig'>Brig</button>\
-					<button id='start_keyboard_davos'>Davos Platz</button>\
 					<button>Bern</button>\
 					<button>Basel</button>\
 					<button>Luzern</button>\
+				</div>\
+				<div class='result'>\
+					<button id='start_keyboard_brig'>Brig</button>\
+					<button id='start_keyboard_davos'>Davos Platz</button>\
 				</div>\
 			</section>\
 			<section class='keyboard_bottom'>\
@@ -190,6 +192,8 @@ var View_start = {
 			$('.keyboard_top .textfield .input').text('');
 		});
 		
+		$('.keyboard_top .result').hide();
+		
 		$('.keyboard_bottom .row button').each(function(i, item) {
 			Mobile.observe_button($(item), function() {
 				
@@ -204,6 +208,14 @@ var View_start = {
 				}
 				$('.keyboard_top .textfield .input').text(text);
 				
+				
+				if ($('.keyboard_top .textfield .input').text() == '') {
+					$('.keyboard_top .result').hide();
+					$('.keyboard_top .top_destination').show();
+				} else {
+					$('.keyboard_top .result').show();
+					$('.keyboard_top .top_destination').hide();
+				}
 			});
 		});
 		
