@@ -40,6 +40,17 @@ var Controller = {
 		}
 	},
 	
+	destinations: [
+		{
+			key: 'brig',
+			name: 'Brig'
+		},
+		{
+			key: 'davos',
+			name: 'Davos Platz'
+		}
+	],
+	
 	selected_options_default: {
 		destination: '',
 		via: 0,

@@ -90,7 +90,7 @@ var View_start = {
 		var result = "\
 			<section class='keyboard_top'>\
 				<h1>Zielort bitte eingeben</h1>\
-				<div class='textfield'><span>|</span></div>\
+				<div class='textfield'><span class='input'></span><span class='line'>|</span></div>\
 				<div class='top_destination'>\
 					<h3>Am häufigsten benutzte Zielorte</h3>\
 					<button id='start_keyboard_brig'>Brig</button>\
@@ -170,6 +170,9 @@ var View_start = {
 		Mobile.observe_button($('#start_destination'), function() {
 			Controller.show_information('tool');
 		});
+		
+		
+		// keyboard
 		Mobile.observe_button($('#start_keyboard_brig'), function() {
 			Controller.selected_options.destination = 'brig';
 			Controller.selected_options.via = 0;
@@ -184,7 +187,26 @@ var View_start = {
 		});
 		Mobile.observe_button($('#start_keyboard_close'), function() {
 			Controller.hide_information();
+			$('.keyboard_top .textfield .input').text('');
 		});
+		
+		$('.keyboard_bottom .row button').each(function(i, item) {
+			Mobile.observe_button($(item), function() {
+				
+				var text = $('.keyboard_top .textfield .input').text();
+				
+				if ($(item).text() == 'del') {
+					text = text.substring(0, text.length - 1);
+				} else if ($(item).text() == 'Leerzeichen') {
+					text += ' ';
+				} else {
+					text += $(item).text();
+				}
+				$('.keyboard_top .textfield .input').text(text);
+				
+			});
+		});
+		
 		
 	}
 	
