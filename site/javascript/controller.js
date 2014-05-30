@@ -52,6 +52,13 @@ var Controller = {
 			key: 'baar',
 			name: 'Baar'
 		},
+
+		{
+			key: 'bad-ragaz',
+			name: 'Bad Ragaz'
+		},
+
+
 		
 		{
 			key: 'brig',
