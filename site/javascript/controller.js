@@ -1,5 +1,5 @@
 var Controller = {
-	current_screen: 'start',
+	current_screen: 'via',
 	screens: ['start', 'via', 'option', 'date', 'summary', 'pay'],
 	
 	route: {
@@ -41,101 +41,33 @@ var Controller = {
 	},
 	
 	destinations: [
-
-		{
-			key: 'bern',
-			name: 'Bern'
-		},
-
-
-		{
-			key: 'basel',
-			name: 'Basel'
-		},
-
-		{
-			key: 'baden',
-			name: 'Baden'
-		},
-
-		{
-			key: 'bellinzona',
-			name: 'Bellinzona'
-		},
-
-		{
-			key: 'baar',
-			name: 'Baar'
-		},
-
-		{
-			key: 'bad-ragaz',
-			name: 'Bad Ragaz'
-		},
-
-		{
-			key: 'brienz',
-			name: 'Brienz'
-		},
-		
-		{
-			key: 'brienz-west',
-			name: 'Brienz-West'
-		},
-		
-		{
-			key: 'brienzwiler',
-			name: 'Brienzwiler'
-		},
-		
-		{
-			key: 'brig',
-			name: 'Brig'
-		},
-
-		{
-			key: 'brüttelen',
-			name: 'Brüttelen'
-		},
-
-		{
-			key: 'bubikon',
-			name: 'Bubikon'
-		},
-		
-		{
-			key: 'buelach',
-			name: 'Bülach'
-		},
-
-		{
-			key: 'davos-dorf',
-			name: 'Davos Dorf'
-		}
-
-		{
-			key: 'davos-platz',
-			name: 'Davos Platz'
-		}
-		
-		{
-			key: 'dietikon',
-			name: 'Dietikon'
-		}
-		
-		{
-			key: 'disentis-muster',
-			name: 'Disentis/Mustér'
-		}
+		{ key: 'bern', name: 'Bern' },
+		{ key: 'basel', name: 'Basel' },
+		{ key: 'baden', name: 'Baden' },
+		{ key: 'bellinzona', name: 'Bellinzona' },
+		{ key: 'baar', name: 'Baar' },
+		{ key: 'bad-ragaz', name: 'Bad Ragaz' },
+		{ key: 'brienz', name: 'Brienz' },		
+		{ key: 'brienz-west', name: 'Brienz-West' },		
+		{ key: 'brienzwiler', name: 'Brienzwiler' },		
+		{ key: 'brig', name: 'Brig' },
+		{ key: 'brüttelen', name: 'Brüttelen' },
+		{ key: 'bubikon', name: 'Bubikon' },		
+		{ key: 'buelach', name: 'Bülach' },
+		{ key: 'davos-dorf', name: 'Davos Dorf' },
+		{ key: 'davos-platz', name: 'Davos Platz' },		
+		{ key: 'dietikon', name: 'Dietikon' },		
+		{ key: 'disentis-muster', name: 'Disentis/Mustér' }
 	],
 	
 	selected_options_default: {
-		destination: '',
+		destination: 'brig',
 		via: 0,
 		ticket_halbtax: 0,
 		ticket_normal: 0,
 		sbb_class: 2,
-		back: false
+		back: false,
+		date_today: false
 	},
 	
 	selected_options: {},
@@ -173,7 +105,6 @@ var Controller = {
 	},
 	
 	show_information: function(type) {
-		console.log(type);
 		$('#slideRightContainer > div').hide();
 		$('#slideRightContainer > #'+type).show();
 		ScreenController.slideInRight();
@@ -288,6 +219,18 @@ var Controller = {
 	},
 	
 	get_suggestions: function(input) {
+		var result = [];
+		$(this.destinations).each((function(i, item) {
+			if (input.toLowerCase() == item.key.substr(0, input.length).toLowerCase()) {
+			    item.route = false;
+			    if (this.route[item.key] != undefined) {
+			    	item.route = true;
+			    }
+			    result.push(item);
+			}
+		}).bind(this));
 		
+		// console.log(result);
+		return result;
 	}
 }

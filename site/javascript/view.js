@@ -51,7 +51,7 @@ var View_start = {
 		if (Controller.selected_options.destination != '') {
 			var route = Controller.route[Controller.selected_options.destination];
 			destination_button_text = route.name+' | Zielort ändern';
-			
+		
 			button_next = "<button id='start_next'>weiter</button>";
 		}
 		// console.log(button_next);
@@ -175,18 +175,6 @@ var View_start = {
 		
 		
 		// keyboard
-		Mobile.observe_button($('#start_keyboard_brig'), function() {
-			Controller.selected_options.destination = 'brig';
-			Controller.selected_options.via = 0;
-			Controller.render_view('start', 'screen_active');
-			Controller.hide_information();
-		});
-		Mobile.observe_button($('#start_keyboard_davos'), function() {
-			Controller.selected_options.destination = 'davos';
-			Controller.selected_options.via = 0;
-			Controller.render_view('start', 'screen_active');
-			Controller.hide_information();
-		});
 		Mobile.observe_button($('#start_keyboard_close'), function() {
 			Controller.hide_information();
 			$('.keyboard_top .textfield .input').text('');
@@ -215,10 +203,28 @@ var View_start = {
 				} else {
 					$('.keyboard_top .result').show();
 					$('.keyboard_top .top_destination').hide();
-					
+					$('.keyboard_top .result').text('');
 					// result suggestions
 					var suggestions = Controller.get_suggestions($('.keyboard_top .textfield .input').text());
-					console.log(suggestions);
+					// console.log(suggestions);
+					
+					$(suggestions).each(function(i, item) {
+						if (i < 4) {
+							$('.keyboard_top .result').append('<button id="start_keyboard_'+item.key+'">'+item.name+'</button>');
+					
+							if (item.route) {
+								Mobile.observe_button($('#start_keyboard_'+item.key), function() {
+								    Controller.selected_options.destination = item.key;
+								    Controller.selected_options.via = 0;
+								    Controller.render_view('start', 'screen_active');
+								    Controller.hide_information();
+								});
+							}
+						
+						}
+					});
+										
+					
 				}
 			});
 		});
@@ -235,18 +241,9 @@ var View_via = {
 	render: function() {
 		var result = '';
 		var current_route = Controller.get_route();
+		
 		result += "\
-			<section class='content'>\
-				<section class='ticket_selection'>\
-					<h2>Ihre Auswahl</h2>\
-					<div class='box'>\
-						Zürich HB<br />"+current_route.name+"\
-					</div>\
-					<div class='box'>\
-						via <span class='current_via'>"+current_route.via[Controller.selected_options.via].name+"</span>\
-					</div>\
-				</section>\
-				<section class='content_right'>\
+			<section class='content_left'>\
 		";
 		
 		
@@ -255,9 +252,8 @@ var View_via = {
 		});
 		
 		result += "\
-					<button id='via_info'>Information zu den Vias</button>\
-					<button id='via_different'>Anders Via wählen</button>\
-				</section>\
+				<button id='via_info'>Information zu den Vias</button>\
+				<button id='via_different'>Anders Via wählen</button>\
 		";
 		
 		result += "\
@@ -286,7 +282,8 @@ var View_via = {
 	observe: function() {
 		Controller.radio_button($('.via_button'), function(selected_i) {
 			Controller.selected_options.via = selected_i;
-			$('span.current_via').text(Controller.get_route().via[Controller.selected_options.via].name);
+			$('span.cart_via').text(Controller.get_route().via[Controller.selected_options.via].name);
+			View_static.render_total();
 		});
 		
 		Mobile.observe_button($('#via_info'), function() {
@@ -315,29 +312,8 @@ var View_via = {
 var View_option = {
 	render: function() {
 		var result = '';
-		var current_route = Controller.get_route();
 		result += "\
-			<section class='content'>\
-				<section class='ticket_selection'>\
-					<h2>Ihre Auswahl</h2>\
-					<div class='box'>\
-						Zürich HB<br />"+current_route.name+"\
-					</div>\
-					<div class='box'>\
-						via <span class='cart_via'>"+current_route.via[Controller.selected_options.via].name+"</span>\
-					</div>\
-					<div class='box'>\
-						<div class='cart_ticket_halbtax'><span class='ticket_halbtax_count'>"+Controller.selected_options.ticket_halbtax+"</span> x Halbtax / Kind</div>\
-						<div class='cart_ticket_normal'><span class='ticket_normal_count'>"+Controller.selected_options.ticket_normal+"</span> x Erwachsen</div>\
-						<div class='cart_direction "+(Controller.selected_options.back ? 'direction_retour' : 'direction_easy')+"'></div>\
-						<div><span class='cart_sbb_class'>"+Controller.selected_options.sbb_class+"</span>. Klasse</div>\
-					</div>\
-					<div class='box box_total'>\
-						<div class='cart_total_chf'>CHF <span>"+Controller.get_total().chf+"</span></div>\
-						<div class='cart_total_euro'>€ <span>"+Controller.get_total().euro+"</span></div>\
-					</div>\
-				</section>\
-				<section class='content_right'>\
+			<section class='content_left'>\
 		";
 		
 		
@@ -365,7 +341,6 @@ var View_option = {
 		";
 		
 		result += "\
-				</section>\
 			</section>\
 		";
 		
@@ -376,14 +351,7 @@ var View_option = {
 	render_tool: function() { return ''; },
 	
 	observe: function() {
-		if (Controller.selected_options.ticket_halbtax == 0) {
-			$('.cart_ticket_halbtax').hide();
-		}
-		if (Controller.selected_options.ticket_normal == 0) {
-			$('.cart_ticket_normal').hide();
-		}
-		this.render_total();
-		View_static.handle_next_button();
+		
 		
 		
 		Controller.counter_element($('.ticket_count_halbtax_box'), (function(count) {
@@ -397,8 +365,8 @@ var View_option = {
 				$('.cart_ticket_halbtax').show();
 			}
 			
-			
-			this.render_total();
+			View_static.render_box_option();
+			View_static.render_total();
 			View_static.handle_next_button();
 		}).bind(this));
 		
@@ -414,7 +382,8 @@ var View_option = {
 				$('.cart_ticket_normal').show();
 			}
 			
-			this.render_total();
+			View_static.render_box_option();
+			View_static.render_total();
 			View_static.handle_next_button();
 		}).bind(this));
 		
@@ -429,7 +398,8 @@ var View_option = {
 				$('div.cart_direction').removeClass('direction_retour');
 			}
 			
-			this.render_total();
+			View_static.render_box_date();
+			View_static.render_total();
 		}).bind(this));
 		
 		Controller.radio_button($('.sbb_class_button'), (function(selected_i) {
@@ -437,23 +407,11 @@ var View_option = {
 			
 			$('span.cart_sbb_class').text(Controller.selected_options.sbb_class);
 			
-			this.render_total();
+			View_static.render_total();
 		}).bind(this));
-	},
-	
-	render_total: function() {
-		
-		var total = Controller.get_total();
-		
-		if (total.chf == 0) {
-			$('.box_total').hide();
-		} else {
-			$('.cart_total_chf span').text(total.chf);
-			$('.cart_total_euro span').text(total.euro);
-		
-			$('.box_total').show();
-		}
 	}
+	
+	
 	
 }
 
@@ -463,63 +421,21 @@ var View_option = {
 var View_date = {
 	render: function() {
 		var result = '';
-		var current_route = Controller.get_route();
-		
-		var current_date = new Date();
-		var current_month = (current_date.getMonth()+1);
-		var current_day = (current_date.getDate());
-		var date_formatted = ((current_day < 10 ? "0"+current_day : current_day)+"."+(current_month < 10 ? "0"+current_month : current_month)+"."+current_date.getFullYear());
-		
-		
-		if (Controller.selected_options.back) {
-			var back_date = new Date(current_date.getTime()+(9*24*60*60*1000));
-			var back_month = (back_date.getMonth()+1);
-			var back_day = (back_date.getDate());
-			var back_date_formatted = ((back_day < 10 ? "0"+back_day : back_day)+"."+(back_month < 10 ? "0"+back_month : back_month)+"."+back_date.getFullYear());
-		
-			date_formatted = "Gültig von "+date_formatted+" bis "+back_date_formatted;
-		} else {
-			date_formatted = "Gültig Heute ("+date_formatted+")";
-		}
-		
+				
 		
 		result += "\
-			<section class='content'>\
-				<section class='ticket_selection'>\
-					<h2>Ihre Auswahl</h2>\
-					<div class='box'>\
-						Zürich HB<br />"+current_route.name+"\
-					</div>\
-					<div class='box'>\
-						via <span class='cart_via'>"+current_route.via[Controller.selected_options.via].name+"</span>\
-					</div>\
-					<div class='box'>\
-						<div class='cart_ticket_halbtax'><span class='ticket_halbtax_count'>"+Controller.selected_options.ticket_halbtax+"</span> x Halbtax / Kind</div>\
-						<div class='cart_ticket_normal'><span class='ticket_normal_count'>"+Controller.selected_options.ticket_normal+"</span> x Erwachsen</div>\
-						<div class='cart_direction "+(Controller.selected_options.back ? 'direction_retour' : 'direction_easy')+"'></div>\
-						<div><span class='cart_sbb_class'>"+Controller.selected_options.sbb_class+"</span>. Klasse</div>\
-					</div>\
-					<div class='box'>\
-						<div class='cart_date'>"+date_formatted+"</div>\
-					</div>\
-					<div class='box box_total'>\
-						<div class='cart_total_chf'>CHF <span>"+Controller.get_total().chf+"</span></div>\
-						<div class='cart_total_euro'>€ <span>"+Controller.get_total().euro+"</span></div>\
-					</div>\
-				</section>\
-				<section class='content_right'>\
+			<section class='content_left'>\
 		";
 		
 		
 		result += "\
 				<div class='group_box'>\
-					<button class='selected' id='date_today_button'>"+date_formatted+"</button>\
+					<button class='selected' id='date_today_button'>"+View_static.render_date_formatted()+"</button>\
 					<button id='date_later_button'>Späteres Datum</button>\
 				</div>\
 		";
 		
 		result += "\
-				</section>\
 			</section>\
 		";
 		
@@ -528,7 +444,9 @@ var View_date = {
 	
 	render_information: function() { return '';	},
 	render_tool: function() { return ''; },
-	observe: function() {}
+	observe: function() {
+		Controller.selected_options.date_today = true;
+	}
 	
 }
 
@@ -589,20 +507,44 @@ var View_static = {
 		var result = "";
 		
 		result = "\
-		    <nav>\
-		    	<button id='static_back'>zurück</button>\
-				<div class='slider_wrapper'>\
-					<div class='line_back'></div>\
-					<div class='line_front'></div>\
-					<div class='bullet'>1</div>\
-					<div class='bullet'>2</div>\
-					<div class='bullet'>3</div>\
-					<div class='bullet'>4</div>\
-					<div class='bullet'>5</div>\
-					<div class='bullet_current'>2</div>\
-				</div>\
-				<button id='static_next'>weiter</button>\
-		    </nav>\
+			<section class='content_right'>\
+				<section class='ticket_selection'>\
+					<h2>Ihre Auswahl</h2>\
+					<div class='box'>\
+						Zürich HB<br /><span class='cart_destination'></span>\
+					</div>\
+					<div class='box'>\
+						via <span class='cart_via'></span>\
+					</div>\
+					<div class='box box_option'>\
+						<div class='cart_ticket_halbtax'><span class='cart_ticket_halbtax_count'></span> x Halbtax / Kind</div>\
+						<div class='cart_ticket_normal'><span class='cart_ticket_normal_count'></span> x Erwachsen</div>\
+						<div class='cart_direction'></div>\
+						<div><span class='cart_sbb_class'></span>. Klasse</div>\
+					</div>\
+					<div class='box box_date'>\
+						<div class='cart_date'></div>\
+					</div>\
+					<div class='box box_total'>\
+						<div class='cart_total_chf'>CHF <span></span></div>\
+						<div class='cart_total_euro'>€ <span></span></div>\
+					</div>\
+				</section>\
+			    <nav>\
+			    	<button id='static_back'>zurück</button>\
+					<div class='slider_wrapper'>\
+						<div class='line_back'></div>\
+						<div class='line_front'></div>\
+						<div class='bullet'>1</div>\
+						<div class='bullet'>2</div>\
+						<div class='bullet'>3</div>\
+						<div class='bullet'>4</div>\
+						<div class='bullet'>5</div>\
+						<div class='bullet_current'>2</div>\
+					</div>\
+					<button id='static_next'>weiter</button>\
+			    </nav>\
+			</section>\
 		";
 		
 		return result;
@@ -674,38 +616,61 @@ var View_static = {
 	},
 	
 	controll: function() {
+		// slider update
 		$('.slider_wrapper').attr('class', 'slider_wrapper step_'+Controller.current_screen);
 		$('.slider_wrapper .bullet_current').text(Controller.get_step_nr());
 		
-		if ($.inArray(Controller.current_screen, ['via', 'option', 'date']) > -1) {
-			$('nav').show();
-		} else if (Controller.current_screen == 'summary') {
-			$('nav').show();
-			$('#static_next').hide();
+		// right content visibility
+		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary']) > -1) {
+			$('.content_right').show();
+			if (Controller.current_screen == 'summary') {
+				$('#static_next').hide();
+			} else {
+				$('#static_next').show();
+			}
 		} else {
-			$('nav').hide();
+			$('.content_right').hide();
 		}
 		
+		// footer cancel button update
 		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary']) > -1) {
 			$('#static_cancel').show();
 		} else {
 			$('#static_cancel').hide();
 		}
 		
+		// footer help button update
 		if ($.inArray(Controller.current_screen, ['start', 'via', 'option', 'date', 'summary']) > -1) {
 			$('#static_help').show();
 		} else {
 			$('#static_help').hide();
 		}
 		
+		// footer language buttons update
 		if (Controller.current_screen == 'start') {
 			$('#language').show();
 		} else {
 			$('#language').hide();
 		}
 		
-		this.handle_next_button();
+		// cart update
+		if ($.inArray(Controller.current_screen, ['date']) > -1) {
+			
+			
+		}
+		if ($.inArray(Controller.current_screen, ['via', 'option', 'date']) > -1) {
+			var current_route = Controller.get_route();
+			$('.cart_destination').text(current_route.name);
+			$('.cart_via').text(current_route.via[Controller.selected_options.via].name);
+			
+			this.render_box_date();
+			this.render_box_option();
+			this.render_total();
+			
+		}
 		
+		
+		this.handle_next_button();
 		// $('nav').show();
 	},
 	
@@ -721,7 +686,77 @@ var View_static = {
 		} else {
 			$('#static_next').show();
 		}
+	},
+	
+	render_box_option: function() {
+		if (Controller.selected_options.ticket_normal == 0 && Controller.selected_options.ticket_halbtax == 0) {
+		    $('.box_option').hide();
+		} else {
+		    $('.cart_ticket_halbtax').show();
+		    $('.cart_ticket_normal').show();
+		    if (Controller.selected_options.ticket_halbtax == 0) {
+		    	$('.cart_ticket_halbtax').hide();
+		    } else {
+			    $('.cart_ticket_halbtax_count').text(Controller.selected_options.ticket_halbtax);
+		    }
+		    if (Controller.selected_options.ticket_normal == 0) {
+		        $('.cart_ticket_normal').hide();
+		    }else {
+			    $('.cart_ticket_normal_count').text(Controller.selected_options.ticket_normal);
+		    }
+		    
+		    $('.cart_sbb_class').text(Controller.selected_options.sbb_class);
+		    
+		    $('.box_option').show();
+		}
+	},
+	
+	render_box_date: function() {
+		if (Controller.selected_options.date_today == false) {
+			$('.box_date').hide();
+		} else {
+		
+			$('.cart_date').text(this.render_date_formatted());
+			$('.box_date').show();
+		}
+	},
+	
+	render_total: function() {
+		
+		var total = Controller.get_total();
+		
+		if (total.chf == 0) {
+			$('.box_total').hide();
+		} else {
+			$('.cart_total_chf span').text(total.chf);
+			$('.cart_total_euro span').text(total.euro);
+		
+			$('.box_total').show();
+		}
+	},
+	
+	render_date_formatted: function() {
+		var current_date = new Date();
+		var current_month = (current_date.getMonth()+1);
+		var current_day = (current_date.getDate());
+		var date_formatted = ((current_day < 10 ? "0"+current_day : current_day)+"."+(current_month < 10 ? "0"+current_month : current_month)+"."+current_date.getFullYear());
+		
+		
+		if (Controller.selected_options.back) {
+		    var back_date = new Date(current_date.getTime()+(9*24*60*60*1000));
+		    var back_month = (back_date.getMonth()+1);
+		    var back_day = (back_date.getDate());
+		    var back_date_formatted = ((back_day < 10 ? "0"+back_day : back_day)+"."+(back_month < 10 ? "0"+back_month : back_month)+"."+back_date.getFullYear());
+		
+		    date_formatted = "Gültig von "+date_formatted+" bis "+back_date_formatted;
+		} else {
+		    date_formatted = "Gültig Heute ("+date_formatted+")";
+		}
+		
+		return date_formatted;
 	}
+	
+	
 	
 }
 
