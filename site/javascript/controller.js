@@ -1,5 +1,6 @@
 var Controller = {
-	current_screen: 'via',
+	current_screen: 'start',
+	last_screen: '',
 	screens: ['start', 'via', 'option', 'date', 'summary', 'pay'],
 	
 	route: {
@@ -23,7 +24,7 @@ var Controller = {
 				}
 			]
 		},
-		'davos': {
+		'davos-platz': {
 			'name': 'Davos Platz',
 			'via': [
 				{
@@ -48,7 +49,7 @@ var Controller = {
 		{ key: 'baar', name: 'Baar' },
 		{ key: 'bad-ragaz', name: 'Bad Ragaz' },
 		{ key: 'brienz', name: 'Brienz' },		
-		{ key: 'brienz-west', name: 'Brienz-West' },		
+		{ key: 'brienz-west', name: 'Brienz West' },		
 		{ key: 'brienzwiler', name: 'Brienzwiler' },		
 		{ key: 'brig', name: 'Brig' },
 		{ key: 'brüttelen', name: 'Brüttelen' },
@@ -57,11 +58,36 @@ var Controller = {
 		{ key: 'davos-dorf', name: 'Davos Dorf' },
 		{ key: 'davos-platz', name: 'Davos Platz' },		
 		{ key: 'dietikon', name: 'Dietikon' },		
-		{ key: 'disentis-muster', name: 'Disentis/Mustér' }
+		{ key: 'disentis-muster', name: 'Disentis Mustér' },
+		{ key: 'aadorf', name: 'Aadorf' },
+		{ key: 'celerina', name: 'Celerina' },
+		{ key: 'effretikon', name: 'Effretikon' },
+		{ key: 'frauenfeld', name: 'Frauenfeld' },
+		{ key: 'giswil', name: 'Giswil' },
+		{ key: 'hallwil', name: 'Hallwil' },
+		{ key: 'interlaken', name: 'Interlaken Ost' },
+		{ key: 'jona', name: 'Jona' },
+		{ key: 'kilchberg', name: 'Kilchberg' },
+		{ key: 'laufen', name: 'Laufen' },
+		{ key: 'martigny', name: 'Martigny' },
+		{ key: 'naters', name: 'Naters' },
+		{ key: 'ostermundigen', name: 'Ostermundigen' },
+		{ key: 'pontarlier', name: 'Pontarlier' },
+		{ key: 'quartino', name: 'Quartino' },
+		{ key: 'rheinfelden', name: 'Rheinfelden' },
+		{ key: 'sargans', name: 'Sargans' },
+		{ key: 'st-gallen', name: 'St. Gallen' },
+		{ key: 'thalwil', name: 'Thalwil' },
+		{ key: 'urdorf', name: 'Urdorf' },
+		{ key: 'vevey', name: 'Vevey' },
+		{ key: 'wädenswil', name: 'Wädenswil' },
+		{ key: 'winterthur', name: 'Winterthur' },
+		{ key: 'yverdon', name: 'Yverdon les Bains' },
+		{ key: 'zermatt', name: 'Zermatt' }
 	],
 	
 	selected_options_default: {
-		destination: 'brig',
+		destination: '',
 		via: 0,
 		ticket_halbtax: 0,
 		ticket_normal: 0,
@@ -84,6 +110,13 @@ var Controller = {
 	},
 	
 	reset: function() {
+		$('body').removeClass('scroll-forward');
+		$('body').removeClass('scroll-backward');
+		
+		this.last_screen = this.current_screen;
+		$('body').removeClass('screen-'+this.last_screen);
+		$('body').addClass('screen-'+this.current_screen);
+		
 		this.current_screen = 'start';
 		this.selected_options = jQuery.extend(true, {}, this.selected_options_default);
 		console.log(this.selected_options);
@@ -91,14 +124,25 @@ var Controller = {
 	},
 	
 	next_screen: function() {
+		$('body').removeClass('scroll-forward');
+		$('body').removeClass('scroll-backward');
+		$('body').addClass('scroll-forward');
+	
+	
 		var next_screen_name = this.get_next_screen_name();
+		this.last_screen = this.current_screen;
 		this.current_screen = next_screen_name;
 		this.render_view(next_screen_name, 'screen_bottom');
 		ScreenController.slideDown();
 	},
 	
 	prev_screen: function() {
+		$('body').removeClass('scroll-forward');
+		$('body').removeClass('scroll-backward');
+		$('body').addClass('scroll-backward');
+		
 		var prev_screen_name = this.get_prev_screen_name();
+		this.last_screen = this.current_screen;
 		this.current_screen = prev_screen_name;
 		this.render_view(prev_screen_name, 'screen_top');
 		ScreenController.slideUp();
@@ -115,6 +159,8 @@ var Controller = {
 	},
 	
 	render_view: function(screen_name, screen_container_class) {
+		$('body').removeClass('screen-'+this.last_screen);
+		$('body').addClass('screen-'+screen_name);
 		// console.log(View.get(screen_name).render());
 		var view_object = View.get(screen_name);
 		$('.'+screen_container_class).html(view_object.render());
@@ -221,7 +267,7 @@ var Controller = {
 	get_suggestions: function(input) {
 		var result = [];
 		$(this.destinations).each((function(i, item) {
-			if (input.toLowerCase() == item.key.substr(0, input.length).toLowerCase()) {
+			if (input.toLowerCase() == item.name.substr(0, input.length).toLowerCase()) {
 			    item.route = false;
 			    if (this.route[item.key] != undefined) {
 			    	item.route = true;

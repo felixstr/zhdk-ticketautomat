@@ -46,10 +46,12 @@ var ScreenController = {
 	
 	slideUp: function() {
 		$('body').addClass('slideUp');
-
+		
 		$('section#slideContainer').on('webkitTransitionEnd', function(item) {
-			// console.log('juhu', item);
+			
 			if ($('body').hasClass('slideUp')) {
+				// console.log('juhu', item);
+			
 				$('body').removeClass('slideUp');
 				
 				if ($('#screen_1').hasClass('screen_top')) {
@@ -79,6 +81,7 @@ var ScreenController = {
 				
 				$('.screen_active').before($('.screen_top'));
 			}
+			
 			
 		});
 		
