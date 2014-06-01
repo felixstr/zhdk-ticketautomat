@@ -720,8 +720,8 @@ button#static_pay {
 	bottom: 16px;
 	position: absolute;
 	right: 160px;
-	padding-left:50px;
-	padding-right: 50px;
+	width: 780px; 
+	text-align:center;
 }
 
 
