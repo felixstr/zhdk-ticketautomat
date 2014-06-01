@@ -38,6 +38,21 @@ var Controller = {
 					'price_2': 71.00
 				}
 			]
+		},
+		'kreuzlingen': {
+			'name': 'Kreuzlingen',
+			'via': [
+				{
+					'name': 'Landquart',
+					'price_1': 93.00,
+					'price_2': 53.00
+				},
+				{
+					'name': 'Rorschach-Landquart',
+					'price_1': 125.00,
+					'price_2': 71.00
+				}
+			]
 		}
 	},
 	
@@ -83,7 +98,8 @@ var Controller = {
 		{ key: 'wädenswil', name: 'Wädenswil' },
 		{ key: 'winterthur', name: 'Winterthur' },
 		{ key: 'yverdon', name: 'Yverdon les Bains' },
-		{ key: 'zermatt', name: 'Zermatt' }
+		{ key: 'zermatt', name: 'Zermatt' },
+		{ key: 'kreuzlingen', name: 'Kreuzlingen' }
 	],
 	
 	selected_options_default: {

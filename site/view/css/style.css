@@ -107,11 +107,7 @@ body.slideInRight section#slideRightContainer {
 }
 .content_right {
 	right: 32px;
-	width: 350px;	
-	transition: 0.5s;
-	transition-delay: 0.2s;
-	transition-timing-function: ease;
-	transition-property: opacity, width;
+	width: 368px;
 }
 body.screen-start .content_right {
 	visibility: hidden;
@@ -120,7 +116,7 @@ body.screen-start .content_right {
 	left: 32px;
 	top: 112px;
 	bottom: 112px;
-	width: 600px;
+	width: 586px;
 }
 
 /* button */
@@ -132,13 +128,13 @@ button {
 	font-size: 18px;
 	color: white;
 	background: #666666;
-	box-shadow: 0px 3px 0px black;
+	box-shadow: 0px 3px 0px rgba(0,0,0,0.8);
 	text-align: left;
 	
 	cursor: pointer;
 	
 }
-button.big { padding: 21px; }
+
 button.active,
 button.touch {
 	background: #272829;
@@ -150,30 +146,63 @@ button.selected {
 }
 
 button.red { background: #EE0000; }
-button.wide {
-	width: 100%;
+button.wide { width: 100%; }
+button.second { background: #A6A6A6; }
+
+button.size_1 {
+	padding: 13px;
+}
+button.size_1.touch,
+button.size_1.active {
+	padding-top: 14px;
+	padding-bottom: 12px;
 }
 
+button.size_2 {
+	width: 104px;
+	text-align: center;
+}
+button.size_2.touch,
+button.size_2.active {
+	padding-top: 14px;
+	padding-bottom: 12px;
+}
+
+button.size_3 {
+	text-align: left;
+	height: 64px;
+}
+button.size_3.touch,
+button.size_3.active {
+	padding-top: 14px;
+	padding-bottom: 12px;
+}
+
+
 .button_container {
+	float: left;
 	width: 100%;
 	background: #EBEBEB;
 	padding: 16px;
-	padding-bottom: 0;
-	
+		
 	border-radius: 5px;
 }
 .button_container button {
 	margin-bottom: 16px;
 }
+.button_container button:last-of-type {
+	margin-bottom: 0;
+}
 
 /* text */
 h1 {
 	font-size: 32px;
-	margin-bottom: 30px;
+	margin-bottom: 40px;
 	font-weight: normal;
 	color: #EE0000;
 	font-family: "Helvetica Neue";
   	font-weight: 300;
+  	line-height: 71%;
 }
 h2 {
 	color: white;
@@ -184,52 +213,74 @@ label {
 	font-size: 20px;
 	display: block;
 	margin-bottom: 16px;
+	line-height: 95%;
 }
 
 /* header */
 img#logo {
 	position: absolute;
-	right: 20px;
-	top: 30px;
-	width: 200px;
+	right: 32px;
+	top: 29px;
+	width: 213px;
 }
 #clock {
 	position: absolute;
 	left: 50%;
-	top: 4px;
+	top: 8px;
 	margin-left: -35px;
+	width: 65px;
+	height: 65px;
 }
 #date {
 	position: absolute;
 	left: 32px;
-	top: 20px;
+	top: 28px;
+	font-size: 21px;
+	font-weight:500;
 }
 
 /* footer */
 #language {
-	float: right;
+	position: absolute;
+	top: 16px;
+	left: 32px;
+}
+#language button {
+	width: 64px;
+	text-align: center;
+	height: 48px;
+	float: left;
+	margin-right: 16px;
+}
+footer {
+	padding-left: 32px;
+	padding-top: 16px;
+}
+footer > button {
+	float: left;
+	margin-right: 16px;
 }
 
 /* static content_right */
 .content_right .ticket_selection {
 	float: left;
-	width: 200px;
+	width: 192px;
 	height: 512px;
 	background: #003399;
 	border-radius: 5px;
 	padding: 16px;
 	position: relative;
-	
-	
 }
-.content_right .ticket_selection,
-.content_right .ticket_selection .column_1,
-.content_right .ticket_selection .column_2,
-.content_right .ticket_selection .box_total {
+
+body.scroll-forward .content_right,
+body.scroll-forward .content_right .ticket_selection,
+body.scroll-forward .content_right .ticket_selection .column_1,
+body.scroll-forward .content_right .ticket_selection .column_2,
+body.scroll-forward .content_right .ticket_selection .box_total {
 	transition: 0.5s;
 	transition-delay: 0.2s;
 	transition-timing-function: ease;
-	transition-property: width, height;
+	transition-property: width, height, opacity;
 }
 
 
@@ -240,11 +291,16 @@ body.scroll-backward .content_right .ticket_selection {
 .content_right .ticket_selection .box {
 	float: left;
 	color: white;
-	border-top: 1px solid white;
-	margin-top: 16px;
-	padding-top: 16px;
+	border-bottom: 1px solid white;
+	margin-top: 12px;
+	padding-bottom: 12px;
 	font-size: 17px;
+	line-height: 22px;
 	width: 100%;
+}
+.content_right .ticket_selection .box:first-of-type {
+	border-top: 1px solid white;
+	padding-top: 12px;
 }
 .content_right .ticket_selection .box .column_1 {
 	width: 0;
@@ -259,8 +315,10 @@ body.scroll-backward .content_right .ticket_selection {
 	position: absolute;
 	bottom: 16px;
 	width: 168px;
+	border: none;
+	padding: 0;
 }
-.content_right .ticket_selection .box_route {
+.content_right .ticket_selection .box_route .column_2 {
 	font-weight: bold;
 }
 .content_right .ticket_selection .cart_total_chf {
@@ -272,8 +330,8 @@ body.screen-summary .content_right {
 	width: 956px;
 }
 body.screen-summary .content_right .ticket_selection {
-	width: 800px;
-	height: 455px;
+	width: 780px;
+	height: 448px;
 }
 body.screen-summary .content_right .ticket_selection .column_1 {
 	width: 30%;
@@ -294,21 +352,19 @@ body.screen-summary .content_right .box_total {
 .content_right nav button#static_back {
 	position: absolute;
 	top: 0;
-	left: 15px;
 }
 .content_right nav button#static_next {
 	position: absolute;
 	bottom: 0;
-	left: 15px;
 }
 /* static slider */
 .content_right nav div.slider_wrapper {
 	position: absolute;
-	top: 80px;
+	top: 74px;
 	left: 0px;
 	/*background: blue;*/
 	width: 100%;
-	height: 350px;
+	height: 364px;
 }
 .content_right nav div.line_back,
 .content_right nav div.line_front {
@@ -337,8 +393,9 @@ body.screen-summary .content_right .box_total {
 	left: 50%;
 	margin-left: -10px;
 	color: white;
-	font-size: 15px;
+	font-size: 14px;
 	padding-top: 1px;
+	font-weight: 500;
 }
 .content_right nav div.bullet_current {
 	background: orange;
@@ -348,7 +405,7 @@ body.screen-summary .content_right .box_total {
 	margin-left: -15px;
 	margin-top: -15px;
 	font-size: 18px;
-	padding-top:2px;
+	padding-top:3px;
 }
 .content_right nav div.bullet:nth-child(3) {top: 0%;}
 .content_right nav div.bullet:nth-child(4) {top: 25%;}
@@ -356,8 +413,8 @@ body.screen-summary .content_right .box_total {
 .content_right nav div.bullet:nth-child(6) {top: 75%;}
 .content_right nav div.bullet:nth-child(7) {top: 100%;}
 
-.content_right nav div.step_start div.line_front {	height: 0; }
-.content_right nav div.step_start div.bullet_current {	top: 0; }
+.content_right nav div.step_start div.line_front {	height: 0%; }
+.content_right nav div.step_start div.bullet_current {	top: 0%; }
 
 .content_right nav div.step_via div.line_front {	height: 25%; }
 .content_right nav div.step_via div.bullet_current {	top: 25%; }
@@ -373,6 +430,10 @@ body.screen-summary .content_right .box_total {
 .content_right nav div.step_summary div.bullet_current,
 .content_right nav div.step_pay div.bullet_current { top: 100%; }
 
+.content_right nav div.step_start div.bullet:nth-child(4),
+.content_right nav div.step_start div.bullet:nth-child(5),
+.content_right nav div.step_start div.bullet:nth-child(6),
+.content_right nav div.step_start div.bullet:nth-child(7),
 .content_right nav div.step_via div.bullet:nth-child(5),
 .content_right nav div.step_via div.bullet:nth-child(6),
 .content_right nav div.step_via div.bullet:nth-child(7),
@@ -392,6 +453,8 @@ nav div.bullet {
 	transition: background 0.5s 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+
+
 /* screen: start */
 section#start_wrapper {
 	background: url(../image/bg_start.jpg);
@@ -406,8 +469,9 @@ section#tabs {
 	background: white;
 	margin-left: 32px;
 	margin-top: 32px;
-	border-radius: 5px;
 	overflow: hidden;
+	
+	border-radius: 5px;
 }
 section#tabs ul {
 	width: 100%;
@@ -426,13 +490,14 @@ section#tabs ul li button {
 	text-align: left;
 	background: #666666;
 	font-size: 20px;
-	padding: 15px;
+	padding: 12px 16px;
 	color: white;
 	border-radius: 0;
 	box-shadow: none;
 }
 section#tabs ul li.current button {
-	background: #003399;
+	background: white;
+	color: #272829;
 }
 section#tabs ul li button.touch {
 	background: #003399;
@@ -452,7 +517,7 @@ section#tabs .tab {
 
 section#start_wrapper .box_left,
 section#start_wrapper .box_right {
-	width: 458px;
+	width: 456px;
 }
 section#start_wrapper .box_left {
 	float: left;
@@ -468,6 +533,29 @@ section#start_wrapper .box_bottom button {
 	float: right;
 	margin-top: 16px;
 }
+section#start_wrapper .input {
+	float: left;
+	width: 100%;
+	background: white;
+	padding: 8px;
+	border: 1px solid #272829;
+	
+	border-radius: 5px;
+	
+}
+section#start_wrapper .input button {
+	margin: 0;
+	height: 46px;
+	float: right;
+}
+
+section#start_wrapper .input .value {
+	position: absolute;
+	font-size: 30px;
+	margin-top: 4px;
+	margin-left: 6px;
+}
+
 
 
 
@@ -502,15 +590,19 @@ section#start_wrapper .box_bottom button {
 	border-radius: 5px;
 	font-size: 30px;
 	color: #272829;
-	margin-bottom: 10px;
+}
+.keyboard_top label {
+	margin-bottom: 8px;
+	margin-top: 16px;
 }
 .keyboard_top button {
 	width: 100%;
 	text-align: left;
-	margin-bottom: 10px;
+	margin-top: 11px;
 	font-size: 25px;
 	font-weight: 300;
 	padding-left: 16px;
+	
 }
 .keyboard_bottom .row button {
 	float: left;
@@ -557,40 +649,85 @@ section#start_wrapper .box_bottom button {
 }
 
 
+/* screen: via */
+body.screen-via .button_container {
+	height: 415px;
+	position: relative;
+}
+button#via_info {
+	float: right;
+}
+button#via_different {
+	position: absolute;
+	bottom: 16px;
+	width: 522px;
+}
+
+
 /* screen: option */
-.box_left, 
-.box_right {
-	width: 270px;
+body.screen-option label {
+	line-height: 25px;
+}
+.content_left .box_left, 
+.content_left .box_right {
+	width: 256px;
 	margin-bottom: 32px;
 }
-.box_left {
+.content_left .box_left {
 	float: left;
 	clear: both;
 }
-.box_right {
+.content_left .box_right {
 	float: right;
 }
-.box_left .button_container, 
-.box_right .button_container {
+.content_left .box_left .button_container, 
+.content_left .box_right .button_container {
 	float: left;
 }
 button.increase,
 button.decrease,
 .number {
 	float: left;
-	width: 68px;
-	height: 68px;
+	width: 64px;
+	height: 64px;
 	text-align: center;
 }
 .number {
 	background: #003399;
 	color: white;
-	padding: 10px 0;
+	padding: 8px 0;
 	font-size: 40px;
-	width: 68px;
-	height: 68px;
-	text-align: center;
 	border-radius: 5px;
 	margin: 0 16px;
 }
 
+.direction_button,
+.sbb_class_button {
+	width: 104px;
+	float: left;
+	height: 64px;
+}
+.direction_button:first-child,
+.sbb_class_button:first-child {
+	margin-right: 16px;
+}
+body.screen-option .button_container button {
+	margin-bottom: 0;
+}
+
+/* screen: summary */
+button#static_pay {
+	bottom: 16px;
+	position: absolute;
+	right: 160px;
+	padding-left:50px;
+	padding-right: 50px;
+}
+
+
+/*
+body.version-2 .content_right,
+body.version-2 .content_left {
+	border-radius: 2px;
+}
+*/

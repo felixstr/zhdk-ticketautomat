@@ -50,7 +50,7 @@ var ScreenController = {
 		$('section#slideContainer').on('webkitTransitionEnd', function(item) {
 			
 			if ($('body').hasClass('slideUp')) {
-				// console.log('juhu', item);
+				//console.log('juhu', item);
 			
 				$('body').removeClass('slideUp');
 				

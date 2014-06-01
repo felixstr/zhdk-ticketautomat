@@ -46,13 +46,13 @@ var View = {
 */
 var View_start = {
 	render: function() {
-		var destination_button_text = "Zielort eingeben";
+		var destination_button = "<button class='wide' id='start_destination'>Zielort wählen</button>";
 		var button_next = "";
 		if (Controller.selected_options.destination != '') {
 			var route = Controller.route[Controller.selected_options.destination];
-			destination_button_text = route.name+' | Zielort ändern';
+			destination_button = "<div class='value'>"+route.name+"</div><button class='size_1' id='start_destination'>Ändern</button>";
 		
-			button_next = "<button class='red' id='start_next'>weiter</button>";
+			button_next = "<button class='red size_2' id='start_next'>Weiter</button>";
 		}
 		// console.log(button_next);
 		var result = "\
@@ -68,13 +68,18 @@ var View_start = {
 						<div class='box_left'>\
 							<label>Von</label>\
 							<div class='button_container'>\
-								<button id='start_departure'>Zürich HB | Abfahrtsort ändern</button>\
+								<div class='input'>\
+									<div class='value'>Zürich HB</div>\
+									<button class='size_1' id='start_departure'>Ändern</button>\
+								</div>\
 							</div>\
 						</div>\
 						<div class='box_right'>\
 							<label>Nach</label>\
 							<div class='button_container'>\
-								<button id='start_destination'>"+destination_button_text+"</button>\
+								<div class='input'>\
+									"+destination_button+"\
+								</div>\
 							</div>\
 						</div>\
 						<div class='box_bottom'>\
@@ -285,12 +290,12 @@ var View_via = {
 		
 		
 		$(current_route.via).each(function(i, item) {
-			result += "<button id='via_"+i+"' class='big wide via_button "+(Controller.selected_options.via == i ? 'selected' : '')+"'>"+item.name+"</button>";
+			result += "<button id='via_"+i+"' class='size_3 wide via_button "+(Controller.selected_options.via == i ? 'selected' : '')+"'>via "+item.name+"</button>";
 		});
 		
 		result += "\
-					<button id='via_info'>Information zu den Vias</button>\
-					<button class='big wide' id='via_different'>Anders Via wählen</button>\
+					<button id='via_info' class='second'>Information zu den Vias</button>\
+					<button class='size_3 wide' id='via_different'>Anders Via wählen</button>\
 				</div>\
 		";
 		
@@ -358,12 +363,12 @@ var View_option = {
 		
 		result += "\
 				<div class='box_left'>\
-					<label>Anzahl Billette<br />Erwachsene mit Halbtax/Kind</label>\
+					<label>Anzahl Billette<br />Erwachsen mit Halbtax/Kind</label>\
 					<div class='button_container'>\
 						<div class='group_box ticket_count_halbtax_box'>\
-							<button class='big decrease' id='decrease_halbtax'>-</button>\
+							<button class='decrease' id='decrease_halbtax'>-</button>\
 							<div class='number ticket_halbtax_input'>"+Controller.selected_options.ticket_halbtax+"</div>\
-							<button class='big increase' id='incerase_halbtax'>+</button>\
+							<button class='increase' id='incerase_halbtax'>+</button>\
 						</div>\
 					</div>\
 				</div>\
@@ -371,9 +376,9 @@ var View_option = {
 					<label>Anzahl Billette<br />Erwachsene ohne Halbtax</label>\
 					<div class='button_container'>\
 						<div class='group_box ticket_count_normal_box'>\
-							<button class='big decrease' id='decrease_normal'>-</button>\
+							<button class='decrease' id='decrease_normal'>-</button>\
 							<div class='number ticket_normal_input'>"+Controller.selected_options.ticket_normal+"</div>\
-							<button class='big increase' id='incerase_normal'>+</button>\
+							<button class='increase' id='incerase_normal'>+</button>\
 						</div>\
 					</div>\
 				</div>\
@@ -382,15 +387,15 @@ var View_option = {
 				<div class='box_left'>\
 					<label>Fahrart</label>\
 					<div class='button_container'>\
-						<button class='big direction_button "+(Controller.selected_options.back == false ? 'selected' : '')+"' id='option_direction_easy'>--></button>\
-						<button class='big direction_button "+(Controller.selected_options.back == true ? 'selected' : '')+"' id='option_direction_retour'><--></button>\
+						<button class='direction_button "+(Controller.selected_options.back == false ? 'selected' : '')+"' id='option_direction_easy'>--></button>\
+						<button class='direction_button "+(Controller.selected_options.back == true ? 'selected' : '')+"' id='option_direction_retour'><--></button>\
 					</div>\
 				</div>\
 				<div class='box_right'>\
 					<label>Klasse</label>\
 					<div class='button_container'>\
-						<button class='big sbb_class_button "+(Controller.selected_options.sbb_class == 1 ? 'selected' : '')+"' id='option_class_1'>1. Klasse</button>\
-						<button class='big sbb_class_button "+(Controller.selected_options.sbb_class == 2 ? 'selected' : '')+"' id='option_class_2'>2. Klasse</button>\
+						<button class='sbb_class_button "+(Controller.selected_options.sbb_class == 1 ? 'selected' : '')+"' id='option_class_1'>1. Klasse</button>\
+						<button class='sbb_class_button "+(Controller.selected_options.sbb_class == 2 ? 'selected' : '')+"' id='option_class_2'>2. Klasse</button>\
 					</div>\
 				</div>\
 		";
@@ -487,8 +492,8 @@ var View_date = {
 		result += "\
 				<div class='button_container'>\
 					<div class='group_box'>\
-						<button class='big wide selected' id='date_today_button'>"+View_static.render_date_formatted()+"</button>\
-						<button class='big wide' id='date_later_button'>Späteres Datum</button>\
+						<button class='size_3 wide selected' id='date_today_button'>"+View_static.render_date_formatted()+"</button>\
+						<button class='size_3 wide' id='date_later_button'>Späteres Datum</button>\
 					</div>\
 				</div>\
 		";
@@ -603,8 +608,9 @@ var View_static = {
 						</div>\
 					</div>\
 				</section>\
+				<button id='static_pay' class='red'>Betrag Bezahlen</button>\
 			    <nav>\
-			    	<button id='static_back'>zurück</button>\
+			    	<button id='static_back' class='size_2'>Zurück</button>\
 					<div class='slider_wrapper'>\
 						<div class='line_back'></div>\
 						<div class='line_front'></div>\
@@ -615,7 +621,7 @@ var View_static = {
 						<div class='bullet'>5</div>\
 						<div class='bullet_current'>2</div>\
 					</div>\
-					<button id='static_next' class='red'>weiter</button>\
+					<button id='static_next' class='red size_2'>Weiter</button>\
 			    </nav>\
 			</section>\
 		";
@@ -627,11 +633,11 @@ var View_static = {
 		var result = '';
 		result = "\
 		    <button id='static_cancel'>Abbrechen</button>\
-		    <button id='static_help'>Hilfe</button>\
+		    <button id='static_help' class='second'>Hilfe</button>\
 		    <div id='language'>\
-		    	<button>FR</button>\
-		    	<button>IT</button>\
-		    	<button>EN</button>\
+		    	<button class='second'>FR</button>\
+		    	<button class='second'>IT</button>\
+		    	<button class='second'>EN</button>\
 		    </div>\
 		";
 		return result;
@@ -709,6 +715,15 @@ var View_static = {
 			// $('.content_right').css('visibility', 'hidden');
 		}
 		
+		// pay-button
+		$('#static_pay').hide();
+		if (Controller.current_screen == 'summary') {
+			$('.ticket_selection').on('webkitTransitionEnd', function() {
+				$('#static_pay').show();
+			});
+		}
+		
+		
 		// footer cancel button update
 		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary']) > -1) {
 			$('#static_cancel').show();
@@ -717,7 +732,7 @@ var View_static = {
 		}
 		
 		// footer help button update
-		if ($.inArray(Controller.current_screen, ['start', 'via', 'option', 'date', 'summary']) > -1) {
+		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary']) > -1) {
 			$('#static_help').show();
 		} else {
 			$('#static_help').hide();
