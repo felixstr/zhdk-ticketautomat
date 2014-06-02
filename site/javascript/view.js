@@ -227,7 +227,7 @@ var View_start = {
 						$('.keyboard_top .result').text('');
 						// result suggestions
 						var suggestions = Controller.get_suggestions($('.keyboard_top .textfield .input').text());
-						console.log(suggestions);
+						// console.log(suggestions);
 						
 						$(suggestions).each(function(i, item) {
 							if (i < 3) {
@@ -236,7 +236,7 @@ var View_start = {
 								if (item.route) {
 									Mobile.observe_button($('#start_keyboard_'+item.key), function() {
 									    Controller.selected_options.destination = item.key;
-									    Controller.selected_options.via = 0;
+									    Controller.selected_options.via = false;
 									    Controller.render_view('start', 'screen_active');
 									    Controller.hide_information();
 									});
@@ -262,7 +262,7 @@ var View_start = {
 			keys.push(item.name.charAt(input_text.length).toLowerCase());
 		});
 		$.unique(keys);
-		console.log(keys);
+		// console.log(keys);
 		$('.keyboard_bottom .char').addClass('inactive');
 		$(keys).each(function(i, item) {
 			if (item == '.') { item = 'dot'; }
@@ -290,7 +290,7 @@ var View_via = {
 		
 		
 		$(current_route.via).each(function(i, item) {
-			result += "<div class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_"+i+"' class='via_button "+(Controller.selected_options.via == i ? 'selected' : '')+"'>via "+item.name+"</button></div>";
+			result += "<div class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_"+i+"' class='via_button "+(Controller.selected_options.via === i ? 'selected' : '')+"'>via "+item.name+"</button></div>";
 		});
 		
 		result += "\
@@ -326,7 +326,9 @@ var View_via = {
 		Controller.radio_button($('.via_button'), function(selected_i) {
 			Controller.selected_options.via = selected_i;
 			$('span.cart_via').text(Controller.get_route().via[Controller.selected_options.via].name);
+			View_static.render_box_via();
 			View_static.render_total();
+			View_static.handle_next_button();
 		});
 		
 		Mobile.observe_button($('#via_info'), function() {
@@ -411,9 +413,7 @@ var View_option = {
 	render_tool: function() { return ''; },
 	
 	observe: function() {
-		
-		
-		
+
 		Controller.counter_element($('.ticket_count_halbtax_box'), (function(count) {
 			Controller.selected_options.ticket_halbtax = count;
 			
@@ -447,9 +447,9 @@ var View_option = {
 			View_static.handle_next_button();
 		}).bind(this));
 		
+		
 		Controller.radio_button($('.direction_button'), (function(selected_i) {
 			Controller.selected_options.back = (selected_i == 1);
-			console.log(Controller.selected_options.back);
 			if (Controller.selected_options.back) {
 				$('div.cart_direction').removeClass('direction_easy');
 				$('div.cart_direction').addClass('direction_retour');
@@ -508,6 +508,7 @@ var View_date = {
 	render_information: function() { return '';	},
 	render_tool: function() { return ''; },
 	observe: function() {
+		
 		Controller.selected_options.date_today = true;
 	}
 	
@@ -545,20 +546,35 @@ var View_summary = {
 */
 var View_pay = {
 	render: function() {
-		var result = 'pay';
+		var result = '';
 		result += "\
-			<button id='pay_cancel'>Abbrechen</button>\
+			<section class='content_full'>\
+				<h1>Sie können Ihre Billette jetzt bezahlen</h1>\
+				<label>Mögliche Zahlarten</label>\
+				<div class='box_left'>\
+					<label>Bargeld</label>\
+					<div class='icon_bargeld'></div>\
+				</div>\
+				<div class='box_right'>\
+					<label>Kreditkarte</label>\
+					<div class='icon_kreditkarte'></div>\
+				</div>\
+				<div class='box_bottom'>\
+					<label>Zu Bezahlen</label>\
+					<div class='total'>\
+						<div class='cart_total_chf'>CHF <span></span></div>\
+						<div class='cart_total_euro'>€ <span></span></div>\
+					</div>\
+				</div>\
+			</section>\
 		";
 		return result;
 	},
 	
 	render_information: function() { return '';	},
 	render_tool: function() { return ''; },
-	
 	observe: function() {
-		Mobile.observe_button($('#pay_cancel'), function() {
-			Controller.prev_screen();
-		});
+		View_static.render_total();
 	}
 	
 }
@@ -581,7 +597,7 @@ var View_static = {
 						<div class='column_1'>Strecke</div>\
 						<div class='column_2'>Zürich HB<br /><span class='cart_destination'></span></div>\
 					</div>\
-					<div class='box'>\
+					<div class='box box_via'>\
 						<div class='column_1'>Via</div>\
 						<div class='column_2'>via <span class='cart_via'></span></div>\
 					</div>\
@@ -666,7 +682,6 @@ var View_static = {
 		
 	controll_static: function() {
 		Mobile.observe_button($('#static_next'), function() {
-			console.log('next-button');
 			Controller.next_screen();
 		});
 		Mobile.observe_button($('#static_back'), function() {
@@ -677,6 +692,9 @@ var View_static = {
 		});
 		Mobile.observe_button($('#static_help'), function() {
 			Controller.show_information('information');
+		});
+		Mobile.observe_button($('#static_pay'), function() {
+			Controller.next_screen();
 		});
 		
 		
@@ -705,27 +723,26 @@ var View_static = {
 				(Controller.last_screen == 'start' && Controller.current_screen == 'via') ||
 				(Controller.last_screen == 'pay' && Controller.current_screen == 'summary')
 			) {
-				// $('.content_right').css('visibility', 'visible');
 				$('.content_right').css('opacity', '1');
 			}
 			
 		} else {
 			
 			$('.content_right').css('opacity', '0');
-			// $('.content_right').css('visibility', 'hidden');
 		}
 		
 		// pay-button
 		$('#button_static_pay').hide();
 		if (Controller.current_screen == 'summary') {
-			$('.ticket_selection').on('webkitTransitionEnd', function() {
+			$('.ticket_selection').on('webkitTransitionEnd transitionend', function() {
 				$('#button_static_pay').show();
 			});
 		}
 		
 		
+		
 		// footer cancel button update
-		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary']) > -1) {
+		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary', 'pay']) > -1) {
 			$('#static_cancel').show();
 		} else {
 			$('#static_cancel').hide();
@@ -746,19 +763,13 @@ var View_static = {
 		}
 		
 		// cart update
-		if ($.inArray(Controller.current_screen, ['date']) > -1) {
-			
-			
-		}
 		if ($.inArray(Controller.current_screen, ['via', 'option', 'date']) > -1) {
-			var current_route = Controller.get_route();
-			$('.cart_destination').text(current_route.name);
-			$('.cart_via').text(current_route.via[Controller.selected_options.via].name);
+			$('.cart_destination').text(Controller.get_route().name);
 			
+			this.render_box_via();
 			this.render_box_date();
 			this.render_box_option();
 			this.render_total();
-			
 		}
 		
 		
@@ -767,7 +778,13 @@ var View_static = {
 	},
 	
 	handle_next_button: function() {
-		if (Controller.current_screen == 'option') {
+		if (Controller.current_screen == 'via') {
+			if (Controller.selected_options.via === false) {
+				$('#static_next').hide();
+			} else {
+				$('#static_next').show();
+			}
+		} else if (Controller.current_screen == 'option') {
 			if (Controller.selected_options.ticket_halbtax == 0 && Controller.selected_options.ticket_normal == 0) {
 				$('#static_next').hide();
 			} else {
@@ -777,6 +794,16 @@ var View_static = {
 			$('#static_next').hide();
 		} else {
 			$('#static_next').show();
+		}
+	},
+	
+	render_box_via: function() {
+		var current_route = Controller.get_route();
+		if (current_route.via[Controller.selected_options.via]) {
+		    $('.cart_via').text(current_route.via[Controller.selected_options.via].name);
+		    $('.box_via').show();
+		} else {
+		    $('.box_via').hide();
 		}
 	},
 	
@@ -796,6 +823,15 @@ var View_static = {
 		    }else {
 			    $('.cart_ticket_normal_count').text(Controller.selected_options.ticket_normal);
 		    }
+		    
+		    // console.log(Controller.selected_options.back);
+		    if (Controller.selected_options.back) {
+				$('div.cart_direction').removeClass('direction_easy');
+				$('div.cart_direction').addClass('direction_retour');
+			} else {
+				$('div.cart_direction').addClass('direction_easy');
+				$('div.cart_direction').removeClass('direction_retour');
+			}
 		    
 		    $('.cart_sbb_class').text(Controller.selected_options.sbb_class);
 		    

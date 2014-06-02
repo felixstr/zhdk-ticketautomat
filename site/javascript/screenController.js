@@ -7,7 +7,7 @@ var ScreenController = {
 	slideDown: function() {
 		$('body').addClass('slideDown');
 
-		$('section#slideContainer').on('webkitTransitionEnd', function(item) {
+		$('section#slideContainer').on('webkitTransitionEnd transitionend', function(item) {
 			// console.log('juhu', item);
 			if ($('body').hasClass('slideDown')) {
 				$('body').removeClass('slideDown');
@@ -47,7 +47,7 @@ var ScreenController = {
 	slideUp: function() {
 		$('body').addClass('slideUp');
 		
-		$('section#slideContainer').on('webkitTransitionEnd', function(item) {
+		$('section#slideContainer').on('webkitTransitionEnd transitionend', function(item) {
 			
 			if ($('body').hasClass('slideUp')) {
 				//console.log('juhu', item);

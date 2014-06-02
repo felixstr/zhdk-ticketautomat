@@ -1,5 +1,5 @@
 var Controller = {
-	current_screen: 'option',
+	current_screen: 'start',
 	last_screen: '',
 	screens: ['start', 'via', 'option', 'date', 'summary', 'pay'],
 	
@@ -43,14 +43,9 @@ var Controller = {
 			'name': 'Kreuzlingen',
 			'via': [
 				{
-					'name': 'Landquart',
-					'price_1': 93.00,
-					'price_2': 53.00
-				},
-				{
-					'name': 'Rorschach-Landquart',
-					'price_1': 125.00,
-					'price_2': 71.00
+					'name': 'Weinfelden',
+					'price_1': 53.00,
+					'price_2': 30.00
 				}
 			]
 		}
@@ -103,7 +98,7 @@ var Controller = {
 	],
 	
 	selected_options_default: {
-		destination: 'kreuzlingen',
+		destination: '',
 		via: 0,
 		ticket_halbtax: 0,
 		ticket_normal: 0,
@@ -143,13 +138,17 @@ var Controller = {
 		$('body').removeClass('scroll-forward');
 		$('body').removeClass('scroll-backward');
 		$('body').addClass('scroll-forward');
-	
-	
+		
 		var next_screen_name = this.get_next_screen_name();
 		this.last_screen = this.current_screen;
 		this.current_screen = next_screen_name;
-		this.render_view(next_screen_name, 'screen_bottom');
-		ScreenController.slideDown();
+		
+		if (next_screen_name != 'pay') {
+			this.render_view(next_screen_name, 'screen_bottom');
+			ScreenController.slideDown();
+		} else {
+			this.render_view(next_screen_name, 'screen_active');
+		}
 	},
 	
 	prev_screen: function() {
@@ -241,42 +240,64 @@ var Controller = {
 	counter_element: function($element, callback) {
 		var count = $element.find('div.number').text();
 		
+		$element.removeClass('empty');
+		if (count == 0){ 
+		    $element.addClass('empty');
+		}
+		
 		Mobile.observe_button($element.find('button.decrease'), function() {
 			if (count > 0){
 				count--;
 				$element.find('div.number').text(count);
 				callback(count);
+			} 
+			
+			$element.removeClass('empty');
+			if (count == 0){ 
+				$element.addClass('empty');
 			}
 		});
 		Mobile.observe_button($element.find('button.increase'), function() {
 			count++;
 			$element.find('div.number').text(count);
 			callback(count);
+			
+			$element.removeClass('empty');
+			if (count == 0){ 
+				$element.addClass('empty');
+			}
 		});
+		
+		
 	},
 	
 	get_total: function() {
 		var route = this.get_route();
 		var via = route.via[this.selected_options.via];
+	
 		var price = {
 			chf: 0,
 			euro: 0
 		};
-		if (this.selected_options.sbb_class == 1) {
-			price.chf += (this.selected_options.ticket_halbtax*via.price_1)/2;
-			price.chf += (this.selected_options.ticket_normal*via.price_1);
+		
+		if (via) {
+			if (this.selected_options.sbb_class == 1) {
+				price.chf += (this.selected_options.ticket_halbtax*via.price_1)/2;
+				price.chf += (this.selected_options.ticket_normal*via.price_1);
+				
+			} else {
+				price.chf += (this.selected_options.ticket_halbtax*via.price_2)/2;
+				price.chf += (this.selected_options.ticket_normal*via.price_2);
+			}
+	
+			if (this.selected_options.back) {
+				price.chf *= 2;
+			}
 			
-		} else {
-			price.chf += (this.selected_options.ticket_halbtax*via.price_2)/2;
-			price.chf += (this.selected_options.ticket_normal*via.price_2);
-		}
-
-		if (this.selected_options.back) {
-			price.chf *= 2;
+			price.euro = (price.chf * 0.819).toFixed(2);
+			price.chf = (price.chf).toFixed(2);
 		}
 		
-		price.euro = (price.chf * 0.819).toFixed(2);
-		price.chf = (price.chf).toFixed(2);
 		return price;
 	},
 	
