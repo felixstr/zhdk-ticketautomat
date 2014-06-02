@@ -1,5 +1,5 @@
 var Controller = {
-	current_screen: 'start',
+	current_screen: 'option',
 	last_screen: '',
 	screens: ['start', 'via', 'option', 'date', 'summary', 'pay'],
 	
@@ -103,7 +103,7 @@ var Controller = {
 	],
 	
 	selected_options_default: {
-		destination: '',
+		destination: 'kreuzlingen',
 		via: 0,
 		ticket_halbtax: 0,
 		ticket_normal: 0,

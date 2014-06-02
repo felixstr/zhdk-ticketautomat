@@ -120,6 +120,107 @@ body.screen-start .content_right {
 }
 
 /* button */
+button { border: none; cursor: pointer; }
+.button_wrap {
+	/*background: green;*/
+	float: left;
+}
+.button_wrap button {
+	font-size: 18px;
+	box-shadow: 0px 3px 0px rgba(0,0,0,0.8);
+	border-radius: 5px;
+}
+.button_wrap button.active,
+.button_wrap button.touch {
+	box-shadow: none;
+	box-shadow: 0px 2px 0px rgba(0,0,0,0.8);
+	padding-top: 1px;
+}
+
+
+.button_wrap.button_h_s {
+	height: 48px;
+}
+.button_wrap.button_h_s button {
+	height: 45px;
+}
+.button_wrap.button_h_m {
+	height: 64px;
+}
+.button_wrap.button_h_m button {
+	height: 61px;
+}
+.button_wrap.button_h_m button.selected {
+	height: 64px;
+}
+
+.button_wrap.button_w_a button {
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.button_wrap.button_w_s button {
+	width: 64px;
+}
+
+.button_wrap.button_w_m button {
+	width: 104px;
+}
+
+.button_wrap.button_w_m2 button {
+	width: 264px;
+}
+
+.button_wrap.button_w_l,
+.button_wrap.button_w_l button {
+	width: 100%;
+	text-align: left;
+}
+.button_wrap.button_w_l button {
+	padding-left: 16px;	
+}
+
+/* type normal */
+.button_wrap.button_t_normal button {
+	background: #666666;
+	color: white;
+}
+.button_wrap.button_t_normal button.selected {
+	background: #003399;
+	box-shadow: none;
+}
+
+/* type second / info */
+.button_wrap.button_t_second button {
+	background: #a6a6a6;
+	color: white;
+}
+
+/* type important */
+.button_wrap.button_t_important button {
+	background: #EE0000;
+	color: white;
+}
+
+/* type key */
+.button_wrap.button_t_key {
+	margin-right: 16px;
+}
+.button_wrap.button_t_key button {
+	background: #A6A6A6;
+	color: #272829;
+	font-size: 25px;
+	font-weight: 400;
+}
+.button_wrap.button_t_key button.inactive {
+	box-shadow: none;
+	background: #DDDDDD;
+	color: #9C9D9D;
+}
+
+
+
+/*
 button {
 	padding: 13px;
 	background: blue;
@@ -178,7 +279,7 @@ button.size_3.active {
 	padding-bottom: 12px;
 }
 
-
+*/
 .button_container {
 	float: left;
 	width: 100%;
@@ -187,12 +288,16 @@ button.size_3.active {
 		
 	border-radius: 5px;
 }
+
+/*
 .button_container button {
 	margin-bottom: 16px;
 }
 .button_container button:last-of-type {
 	margin-bottom: 0;
 }
+*/
+
 
 /* text */
 h1 {
@@ -245,19 +350,12 @@ img#logo {
 	top: 16px;
 	left: 32px;
 }
-#language button {
-	width: 64px;
-	text-align: center;
-	height: 48px;
-	float: left;
-	margin-right: 16px;
-}
+
 footer {
 	padding-left: 32px;
 	padding-top: 16px;
 }
-footer > button {
-	float: left;
+footer .button_wrap {
 	margin-right: 16px;
 }
 
@@ -355,7 +453,7 @@ body.screen-summary .content_right .box_total {
 }
 .content_right nav button#static_next {
 	position: absolute;
-	bottom: 0;
+	bottom: 3px;
 }
 /* static slider */
 .content_right nav div.slider_wrapper {
@@ -529,7 +627,7 @@ section#start_wrapper .box_bottom {
 	float: left;
 	width: 100%;
 }
-section#start_wrapper .box_bottom button {
+section#start_wrapper .button_wrap.button_t_important {
 	float: right;
 	margin-top: 16px;
 }
@@ -543,9 +641,7 @@ section#start_wrapper .input {
 	border-radius: 5px;
 	
 }
-section#start_wrapper .input button {
-	margin: 0;
-	height: 46px;
+section#start_wrapper .input .button_wrap {
 	float: right;
 }
 
@@ -595,33 +691,18 @@ section#start_wrapper .input .value {
 	margin-bottom: 8px;
 	margin-top: 16px;
 }
+.keyboard_top .result {
+	margin-top: 8px;
+}
+.keyboard_top .button_wrap {
+	margin-top: 8px;
+}
 .keyboard_top button {
-	width: 100%;
 	text-align: left;
-	margin-top: 11px;
 	font-size: 25px;
-	font-weight: 300;
-	padding-left: 16px;
-	
+	font-weight: 300;	
 }
-.keyboard_bottom .row button {
-	float: left;
-	width: 64px;
-	height: 61px;
-	text-align: center;
-	margin-right: 16px;
-	font-size: 25px;
-	background: #A6A6A6;
-	color: #272829;
-	font-weight: 300;
-}
-.keyboard_bottom .row button.inactive {
-	box-shadow: none;
-	background: #DDDDDD;
-}
-.keyboard_bottom .row button.del {
-	width: 104px;
-}
+
 .keyboard_bottom .row {
 	float: left;
 	width: 100%;
@@ -639,8 +720,11 @@ section#start_wrapper .input .value {
 .keyboard_bottom .row_4 {
 	padding-left: 296px;
 }
-.keyboard_bottom .row_4 button {
+.keyboard_bottom .row_4 .button_wrap {
 	width: 400px;
+}
+.keyboard_bottom .row_4 .button_wrap button {
+	text-align: center;
 }
 .keyboard_bottom #start_keyboard_close {
 	position: absolute;
@@ -653,15 +737,20 @@ section#start_wrapper .input .value {
 body.screen-via .button_container {
 	height: 415px;
 	position: relative;
+	padding-top: 0;
 }
-button#via_info {
+body.screen-via .button_container .button_wrap {
+	margin-top: 16px;
+}
+#button_via_info {
 	float: right;
 }
-button#via_different {
+#button_different_via {
 	position: absolute;
 	bottom: 16px;
 	width: 522px;
 }
+
 
 
 /* screen: option */
@@ -680,19 +769,12 @@ body.screen-option label {
 .content_left .box_right {
 	float: right;
 }
-.content_left .box_left .button_container, 
-.content_left .box_right .button_container {
-	float: left;
-}
-button.increase,
-button.decrease,
+
 .number {
 	float: left;
 	width: 64px;
 	height: 64px;
 	text-align: center;
-}
-.number {
 	background: #003399;
 	color: white;
 	padding: 8px 0;
@@ -701,26 +783,27 @@ button.decrease,
 	margin: 0 16px;
 }
 
-.direction_button,
-.sbb_class_button {
-	width: 104px;
-	float: left;
-	height: 64px;
-}
-.direction_button:first-child,
-.sbb_class_button:first-child {
+.radio_group .button_wrap:first-child {
 	margin-right: 16px;
 }
-body.screen-option .button_container button {
-	margin-bottom: 0;
+
+/* screen: date */
+body.screen-date .button_container {
+	padding-top: 0;
+}
+body.screen-date .button_container .button_wrap {
+	margin-top: 16px;
 }
 
 /* screen: summary */
-button#static_pay {
+
+#button_static_pay {
 	bottom: 16px;
 	position: absolute;
 	right: 160px;
 	width: 780px; 
+}
+#button_static_pay button {
 	text-align:center;
 }
 
