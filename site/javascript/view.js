@@ -355,7 +355,7 @@ var View_via = {
 				</div>\
 				<label>Weitere Fahrstrecken</label>\
 				<div class='button_container'>\
-					<div id='button_different_via' class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_different'>Anderes Via wählen</button></div>\
+					<div id='button_different_via' class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_different'>Anderen Reiseweg eingeben</button></div>\
 				</div>\
 		";
 		
@@ -507,7 +507,7 @@ var View_option = {
 					</div>\
 				</div>\
 				<div class='box_right'>\
-					<label>Anzahl Billette<br />Erwachsene ohne Halbtax</label>\
+					<label>Anzahl Billette<br />Erwachsen ohne Halbtax</label>\
 					<div class='button_container'>\
 						<div class='group_box ticket_count_normal_box'>\
 							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='decrease' id='decrease_normal'><img src='view/image/minus.svg' /></button></div>\
@@ -757,7 +757,7 @@ var View_static = {
 						<div class='column_1'>Anzahl Billette</div>\
 						<div class='column_2'>\
 							<div class='cart_ticket_halbtax'><span class='cart_ticket_halbtax_count'></span> x Halbtax / Kind</div>\
-							<div class='cart_ticket_normal'><span class='cart_ticket_normal_count'></span> x Erwachsen</div>\
+							<div class='cart_ticket_normal'><span class='cart_ticket_normal_count'></span> x Erwachsene</div>\
 						</div>\
 						<div class='column_1 column_1_fahrart' style='clear:right;'>Fahrart</div>\
 						<div class='column_2'><div class='cart_direction'></div></div>\

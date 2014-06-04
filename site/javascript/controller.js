@@ -27,9 +27,13 @@ var Controller = {
 				}
 			],
 			schedule: [
-				{ 'via': 0, 'time': '08:37', 'duration': '1:13', 'change': 0 },
-				{ 'via': 1, 'time': '08:40', 'duration': '1:44', 'change': 3 },
-				{ 'via': 2, 'time': '08:40', 'duration': '1:44', 'change': 3 }
+				{ 'via': 0, 'time': '08:32', 'duration': '2:08', 'change': 1 },
+				{ 'via': 0, 'time': '09:02', 'duration': '2:09', 'change': 0 },
+				{ 'via': 2, 'time': '09:04', 'duration': '3:58', 'change': 1 },
+				{ 'via': 1, 'time': '09:09', 'duration': '4:31', 'change': 2 },
+				{ 'via': 0, 'time': '10:02', 'duration': '2:09', 'change': 0 },
+				{ 'via': 2, 'time': '10:04', 'duration': '3:58', 'change': 2 },
+				{ 'via': 1, 'time': '10:09', 'duration': '4:31', 'change': 1 }
 			]
 		},
 		'davos-platz': {
@@ -267,8 +271,10 @@ var Controller = {
 		var result = $([]);
 		var route = this.get_route();
 		$(route.schedule).each(function(i, item) {
-			item.via_name = route.via[item.via].name;
-			result.push(item);
+			if (i < 6) {
+				item.via_name = route.via[item.via].name;
+				result.push(item);
+			}
 		});
 		console.log(result);
 		return result;
@@ -388,7 +394,7 @@ var Controller = {
 		$(images).each(function(i, item) {
 			var image = new Image();
 			image.onload = function() {
-				console.log(item);
+				// console.log(item);
 			}
 			image.src = 'view/image/'+item;
 		});
