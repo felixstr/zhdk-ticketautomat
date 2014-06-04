@@ -371,7 +371,27 @@ var Controller = {
 	
 	preload_images: function() {
 	
-		var images = ['bg_start2-werbung.jpg','bg_start2.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg'];
+		var images = [
+			'bg_start2-werbung.jpg',
+			'bg_start2.jpg',
+			'einfach.svg',
+			'einfachklein.svg',
+			'icon_bar.svg',
+			'icon_delete.svg',
+			'icon_karte.svg',
+			'minus.svg',
+			'plus.svg',
+			'retour.svg',
+			'retourklein.svg',
+			'sbb-logo.png'
+		];
+		$(images).each(function(i, item) {
+			var image = new Image();
+			image.onload = function() {
+				console.log(item);
+			}
+			image.src = 'view/image/'+item;
+		});
 		
 	}
 }

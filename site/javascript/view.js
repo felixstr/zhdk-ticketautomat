@@ -393,7 +393,7 @@ var View_via = {
 						    <td>"+item.change+"</td>\
 						    <td>\
 						    	<div class='button_wrap button_h_s button_t_second button_w_a'>\
-						    		<button id='via_map_"+i+"'>karte</button>\
+						    		<button id='via_map_"+i+"'><img src='view/image/karte.svg' /></button>\
 						    	</div>\
 						    	<div class='button_wrap button_h_s button_t_important button_w_m'>\
 						    		<button id='via_choose_"+i+"' class='via_choose' data-via='"+item.via+"'>Wählen</button>\
@@ -631,7 +631,7 @@ var View_date = {
 		result += "\
 			<section class='content_left'>\
 				<h1>Bitte wählen Sie Ihr Reisedatum</h1>\
-				<label>lorem ipsum</label>\
+				<label>Reisedatum</label>\
 		";
 		
 		

@@ -252,6 +252,9 @@ button { border: none; cursor: pointer; }
 	background: #DDDDDD;
 	color: #9C9D9D;
 }
+.row_4 .button_wrap.button_t_key button {
+	padding-top: 0px;
+}
 
 .button_container {
 	float: left;
@@ -262,7 +265,6 @@ button { border: none; cursor: pointer; }
 	border-radius: 8px;
 }
 
-#tabs .input button,
 .content_left button {
 	font-weight: 500;
 }
@@ -286,7 +288,7 @@ h2 {
 label {
 	font-size: 20px;
 	display: block;
-	margin-bottom: 16px;
+	margin-bottom: 14px;
 	line-height: 95%;
 	float: left;
 	width: 100%;
@@ -635,7 +637,7 @@ section#tabs ul li button.touch {
 	background: #003399;
 }
 section#tabs .tab {
-	padding: 15px;
+	padding: 16px;
 	float: left;
 	width: 100%;
 }
@@ -791,7 +793,7 @@ body.screen-via .button_container .button_wrap {
 	float: right;
 }
 body.screen-via .content_left > label:last-of-type {
-	margin-top: 40px;
+	margin-top: 39px;
 }
 
 body.screen-via .table_wrap {
@@ -828,6 +830,9 @@ body.screen-via .table_wrap table td {
 	border-bottom: 1px solid #272829;
 	font-size: 18px;
 }
+body.screen-via .table_wrap table td .button_t_second button {
+	padding-top: 9px
+}
 body.screen-via .table_wrap table td .button_t_important {
 	float: right;
 }
@@ -837,10 +842,15 @@ body.screen-via .table_wrap #via_later {
 }
 
 /* screen: option */
+body.screen-option h1 {
+	margin-bottom: 33px;
+}
 body.screen-option label {
 	line-height: 26px;
 	margin-bottom: 10px;
+	margin-top: 3px;
 }
+
 .content_left .box_left, 
 .content_left .box_right {
 	width: 256px;
@@ -871,7 +881,7 @@ body.screen-option label {
 .group_box.empty .number {
 	background: white;
 	color: #272829;
-	border: 1px solid #B2B2B2;
+	border: 1px solid #666666;
 }
 
 .radio_group .button_wrap:first-child {
@@ -924,7 +934,7 @@ body.screen-pay .icon_kreditkarte {
 	background: #ebebeb;
 	background-size: 424px;
 	background-repeat: no-repeat;
-	background-position: center center;
+	background-position: center 21px;
 	float: left;
 	width: 100%;
 	height: 229px;
