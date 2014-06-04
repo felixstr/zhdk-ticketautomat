@@ -114,7 +114,7 @@ var View_start = {
 						</div>\
 					</div>\
 					<div class='tab' id='tab_2_content'>\
-						<h1>Bitte wählen Sie Ihr Sepzial Billett</h1>\
+						<h1>Bitte wählen Sie Ihr Spezial Billett</h1>\
 						<div class='button_container'>\
 							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Tageskarten Schweiz</button></div>\
 							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Klassenwechsel</button></div>\
@@ -826,7 +826,7 @@ var View_static = {
 		
 		result = "\
 		    <div id='date'>"+date_formatted+"</div>\
-			<canvas id='clock' width='70' height='70'></canvas>\
+			<canvas id='clock' width='140' height='140'></canvas>\
 			<img id='logo' src='view/image/sbb-logo.png' alt='sbb-logo' />\
 		";
 		return result;
@@ -849,7 +849,7 @@ var View_static = {
 			Controller.next_screen(false);
 		});
 		
-		
+		/* clock */
 		var clock = new StationClock("clock");
 		clock.body = StationClock.NoBody;
 		clock.dial = StationClock.SwissStrokeDial;
@@ -860,12 +860,15 @@ var View_static = {
 		clock.minuteHandBehavoir = StationClock.BouncingMinuteHand;
 		clock.secondHandBehavoir = StationClock.OverhastySecondHand;
 		
-		var time_new = new Date(Date.UTC(24,05,05,5,29));
-		var time    = new Date();
+		var time_new = new Date(Date.UTC(24,05,06,5,34)); // 8.34
+		var time = new Date();
       
 		clock.timedifferent = (time_new - time);
 		
 		window.setInterval(function() { clock.draw() }, 50);
+		
+		document.getElementById('clock').getContext('2d').scale(2, 2);
+		$('#clock').attr('width', 140).attr('height', 140);
 		
 	},
 	

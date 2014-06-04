@@ -306,8 +306,8 @@ img#logo {
 	left: 50%;
 	top: 8px;
 	margin-left: -35px;
-	width: 65px;
-	height: 65px;
+	width: 70px;
+	height: 70px;
 }
 #date {
 	position: absolute;
@@ -586,6 +586,7 @@ nav div.bullet {
 	background: url(../image/bg_start2-werbung.jpg);
 	background-size: 100%;
 	background-position: center center;
+	cursor: pointer;
 }
 
 /* screen: start */

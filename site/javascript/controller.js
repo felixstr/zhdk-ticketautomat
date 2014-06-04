@@ -276,7 +276,7 @@ var Controller = {
 				result.push(item);
 			}
 		});
-		console.log(result);
+		// console.log(result);
 		return result;
 	},
 	
