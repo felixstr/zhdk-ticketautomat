@@ -1,7 +1,7 @@
 var Controller = {
-	current_screen: 'start',
+	current_screen: 'screensaver',
 	last_screen: '',
-	screens: ['start', 'via', 'option', 'date', 'summary', 'pay'],
+	screens: ['screensaver', 'start', 'via', 'option', 'date', 'summary', 'pay'],
 	
 	route: {
 		'brig': {
@@ -10,18 +10,26 @@ var Controller = {
 				{
 					'name': 'Olten-Bern-Lötschberg',
 					'price_1': 147.00,
-					'price_2': 84.00
+					'price_2': 84.00,
+					'top': true
 				},
 				{
 					'name': 'Göschenen',
 					'price_1': 133.00,
-					'price_2': 76.00
+					'price_2': 76.00,
+					'top': true
 				},
 				{
 					'name': 'Olten-Bern oder Biel-Lausanne',
 					'price_1': 174.00,
-					'price_2': 99.00
+					'price_2': 99.00,
+					'top': false
 				}
+			],
+			schedule: [
+				{ 'via': 0, 'time': '08:37', 'duration': '1:13', 'change': 0 },
+				{ 'via': 1, 'time': '08:40', 'duration': '1:44', 'change': 3 },
+				{ 'via': 2, 'time': '08:40', 'duration': '1:44', 'change': 3 }
 			]
 		},
 		'davos-platz': {
@@ -30,13 +38,18 @@ var Controller = {
 				{
 					'name': 'Landquart',
 					'price_1': 93.00,
-					'price_2': 53.00
+					'price_2': 53.00,
+					'top': true
 				},
 				{
 					'name': 'Rorschach-Landquart',
 					'price_1': 125.00,
 					'price_2': 71.00
 				}
+			],
+			schedule: [
+				{ 'via': 0, 'time': '08:37', 'duration': '1:13', 'change': 0 },
+				{ 'via': 1, 'time': '08:40', 'duration': '1:44', 'change': 3 }
 			]
 		},
 		'kreuzlingen': {
@@ -45,8 +58,29 @@ var Controller = {
 				{
 					'name': 'Weinfelden',
 					'price_1': 53.00,
-					'price_2': 30.00
+					'price_2': 30.00,
+					'top': true
+				},
+				{
+					'name': 'Schaffhausen',
+					'price_1': 53.00,
+					'price_2': 30.00,
+					'top': false
+				},
+				{
+					'name': 'Stein am Rhein',
+					'price_1': 53.00,
+					'price_2': 30.00,
+					'top': false
 				}
+			],
+			schedule: [
+				{ 'via': 0, 'time': '08:37', 'duration': '1:13', 'change': 0 },
+				{ 'via': 1, 'time': '08:40', 'duration': '1:44', 'change': 3 },
+				{ 'via': 2, 'time': '08:48', 'duration': '1:38', 'change': 2 },
+				{ 'via': 0, 'time': '09:07', 'duration': '1:21', 'change': 1 },
+				{ 'via': 0, 'time': '09:37', 'duration': '1:13', 'change': 0 },
+				{ 'via': 1, 'time': '09:40', 'duration': '1:44', 'change': 3 }
 			]
 		}
 	},
@@ -77,7 +111,6 @@ var Controller = {
 		{ key: 'hallwil', name: 'Hallwil' },
 		{ key: 'interlaken', name: 'Interlaken Ost' },
 		{ key: 'jona', name: 'Jona' },
-		{ key: 'kilchberg', name: 'Kilchberg' },
 		{ key: 'laufen', name: 'Laufen' },
 		{ key: 'martigny', name: 'Martigny' },
 		{ key: 'naters', name: 'Naters' },
@@ -94,15 +127,20 @@ var Controller = {
 		{ key: 'winterthur', name: 'Winterthur' },
 		{ key: 'yverdon', name: 'Yverdon les Bains' },
 		{ key: 'zermatt', name: 'Zermatt' },
-		{ key: 'kreuzlingen', name: 'Kreuzlingen' }
+		{ key: 'kilchberg', name: 'Kilchberg' },
+		{ key: 'kaltbrunn', name: 'Kaltbrunn' },
+		{ key: 'krummenau', name: 'Krummenau' },
+		{ key: 'kreuzlingen', name: 'Kreuzlingen' },
+		{ key: 'kreuzstrasse', name: 'Kreuzstrasse' }
 	],
 	
 	selected_options_default: {
 		destination: '',
-		via: 0,
+		via: false,
+		via_special: false,
 		ticket_halbtax: 0,
 		ticket_normal: 0,
-		sbb_class: 2,
+		sbb_class: false,
 		back: false,
 		date_today: false
 	},
@@ -130,11 +168,11 @@ var Controller = {
 		
 		this.current_screen = 'start';
 		this.selected_options = jQuery.extend(true, {}, this.selected_options_default);
-		console.log(this.selected_options);
 		this.render_view(this.current_screen, 'screen_active');
 	},
 	
-	next_screen: function() {
+	next_screen: function(effect) {
+		if (effect == undefined) { effect = true; }
 		$('body').removeClass('scroll-forward');
 		$('body').removeClass('scroll-backward');
 		$('body').addClass('scroll-forward');
@@ -142,8 +180,8 @@ var Controller = {
 		var next_screen_name = this.get_next_screen_name();
 		this.last_screen = this.current_screen;
 		this.current_screen = next_screen_name;
-		
-		if (next_screen_name != 'pay') {
+
+		if (effect) {
 			this.render_view(next_screen_name, 'screen_bottom');
 			ScreenController.slideDown();
 		} else {
@@ -222,8 +260,19 @@ var Controller = {
 		return this.route[this.selected_options.destination];
 	},
 	
+	get_schedule: function() {
+		var result = $([]);
+		var route = this.get_route();
+		$(route.schedule).each(function(i, item) {
+			item.via_name = route.via[item.via].name;
+			result.push(item);
+		});
+		console.log(result);
+		return result;
+	},
+	
 	get_step_nr: function() {
-		return $.inArray(this.current_screen, this.screens)+1;
+		return $.inArray(this.current_screen, this.screens);
 	},
 	
 	radio_button: function($elements, callback) {

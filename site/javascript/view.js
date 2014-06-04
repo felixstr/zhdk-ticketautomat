@@ -7,6 +7,9 @@ var View = {
 		}
 		
 		switch(screen_name) {
+			case 'screensaver': 
+				result = View_screensaver;
+			break;
 			case 'start': 
 				result = View_start;
 			break;
@@ -40,6 +43,27 @@ var View = {
 	
 }
 
+
+/**
+* VIEW_SCREENSAVER
+*/
+var View_screensaver = {
+	render: function() { 
+		return "<div id='tap_overlay'></div>"; 
+	},
+	
+	render_information: function() { return '';	},
+	render_tool: function() { return ''; },
+	
+	observe: function() {
+		
+		Mobile.observe_button($('#tap_overlay'), function() {
+			Controller.next_screen(false);
+		});
+		
+	}
+	
+}
 
 /**
 * VIEW_START
@@ -89,8 +113,23 @@ var View_start = {
 							"+button_next+"\
 						</div>\
 					</div>\
-					<div class='tab' id='tab_2_content'>Spezial Billette</div>\
-					<div class='tab' id='tab_3_content'>Weiteres Angebot</div>\
+					<div class='tab' id='tab_2_content'>\
+						<h1>Bitte wählen Sie Ihr Sepzial Billett</h1>\
+						<div class='button_container'>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Tageskarten Schweiz</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Klassenwechsel</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Nachtzuschlag</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Mehrfartenkarten</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Velobillette</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Sportangebote</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Freizeit / Events / Museen</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Citytickets</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_m2'><button>Internationale Tickets</button></div>\
+						</div>\
+					</div>\
+					<div class='tab' id='tab_3_content'>\
+						<h1>Weiteres Angebot</h1>\
+					</div>\
 				</section>\
 			</section>\
 		";
@@ -152,12 +191,12 @@ var View_start = {
 					<div class='button_wrap button_h_m button_w_s button_t_key'><button class='char char_n'>N</button></div>\
 					<div class='button_wrap button_h_m button_w_s button_t_key'><button class='char char_m'>M</button></div>\
 					<div class='button_wrap button_h_m button_w_s button_t_key'><button class='char char_dot'>.</button></div>\
-					<div class='button_wrap button_h_m button_w_m button_t_key'><button class='del'>del</button></div>\
+					<div class='button_wrap button_h_m button_w_m button_t_key'><button class='del'><img src='view/image/icon_delete.svg' /></button></div>\
 				</div>\
 				<div class='row row_4'>\
 					<div class='button_wrap button_h_m button_t_key button_w_l'><button class='char char_space'>Leerzeichen</button></div>\
 				</div>\
-				<div class='button_wrap button_h_s button_t_normal button_w_a'><button id='start_keyboard_close'>Abbrechen</button></div>\
+				<div class='button_wrap button_h_s button_t_normal button_w_a help_close'><button id='start_keyboard_close'>Abbrechen</button></div>\
 			</section>\
 		";
 		
@@ -206,12 +245,12 @@ var View_start = {
 				if (!$(item).hasClass('inactive')) {
 					var text = $('.keyboard_top .textfield .input').text();
 					
-					if ($(item).text() == 'del') {
+					if ($(item).hasClass('del')) {
 						text = text.substring(0, text.length - 1);
 					} else if ($(item).text() == 'Leerzeichen') {
 						text += ' ';
 					} else {
-						text += $(item).text();
+						text += (text == '' ? $(item).text().toUpperCase() : $(item).text().toLowerCase());
 					}
 					$('.keyboard_top .textfield .input').text(text);
 					
@@ -237,6 +276,7 @@ var View_start = {
 									Mobile.observe_button($('#start_keyboard_'+item.key), function() {
 									    Controller.selected_options.destination = item.key;
 									    Controller.selected_options.via = false;
+									    Controller.selected_options.via_special = false;
 									    Controller.render_view('start', 'screen_active');
 									    Controller.hide_information();
 									});
@@ -286,16 +326,36 @@ var View_via = {
 				<h1>Bitte wählen Sie Ihren Reiseweg</h1>\
 				<label>Fahrstrecke via</label>\
 				<div class='button_container'>\
+					<div id='top_vias'>\
 		";
 		
 		
 		$(current_route.via).each(function(i, item) {
-			result += "<div class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_"+i+"' class='via_button "+(Controller.selected_options.via === i ? 'selected' : '')+"'>via "+item.name+"</button></div>";
+			if (item.top) {
+				result += "<div class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_"+i+"' class='via_button "+(Controller.selected_options.via === i ? 'selected' : '')+"'>via "+item.name+"</button></div>";
+			}
 		});
 		
 		result += "\
-					<div id='button_via_info' class='button_wrap button_h_s button_t_second button_w_m2'><button id='via_info'>Information zu den Vias</button></div>\
-					<div id='button_different_via' class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_different'>Anders Via wählen</button></div>\
+					</div>\
+					<div id='special_via'>\
+		";
+		
+		if (Controller.selected_options.via_special) {
+			result += "\
+				<div class='button_wrap button_h_m button_t_normal button_w_l'>\
+				    <button class='via_button selected'>via "+Controller.get_route().via[Controller.selected_options.via].name+"</button>\
+				</div>\
+			";
+		}
+		
+		result += "\
+					</div>\
+					<div id='button_via_info' class='button_wrap button_h_s button_t_second button_w_a'><button id='via_info'>Via-Wahlhilfe mit aktuellen Verbindungen</button></div>\
+				</div>\
+				<label>Weitere Fahrstrecken</label>\
+				<div class='button_container'>\
+					<div id='button_different_via' class='button_wrap button_h_m button_t_normal button_w_l'><button id='via_different'>Anderes Via wählen</button></div>\
 				</div>\
 		";
 		
@@ -307,9 +367,50 @@ var View_via = {
 	},
 	
 	render_tool: function() { 
-		var result = 'via screen';
+		var result = '';
+	
 		result += "\
-				<div class='button_wrap button_h_s button_t_normal button_w_a'><button id='via_tool_back'>Schliessen</button></div>\
+			<section class='content_full'>\
+				<h1>Via-Wahlhilfe mit aktuellen Verbindungen</h1>\
+				<label>Fahrstrecke von Zürich HB nach "+Controller.get_route().name+"</label>\
+				<div class='table_wrap'>\
+					<table>\
+						<tr>\
+							<th class='via'>Via</th>\
+							<th class='time'>Zeit</th>\
+							<th class='duration'>Dauer</th>\
+							<th class='change'>Umsteigen</th>\
+							<th class='buttons'>Karte</th>\
+						</tr>\
+		";
+		
+		Controller.get_schedule().each(function(i, item) {
+			result += "\
+						<tr>\
+						    <td>via "+item.via_name+"</td>\
+						    <td>"+item.time+"</td>\
+						    <td>"+item.duration+"</td>\
+						    <td>"+item.change+"</td>\
+						    <td>\
+						    	<div class='button_wrap button_h_s button_t_second button_w_a'>\
+						    		<button id='via_map_"+i+"'>karte</button>\
+						    	</div>\
+						    	<div class='button_wrap button_h_s button_t_important button_w_m'>\
+						    		<button id='via_choose_"+i+"' class='via_choose' data-via='"+item.via+"'>Wählen</button>\
+						    	</div>\
+						    </td>\
+						</tr>\
+			";
+		});
+		
+		result += "\
+					</table>\
+					<div id='via_later' class='button_wrap button_h_s button_t_normal button_w_a'>\
+					    <button>Spätere Verbindungen</button>\
+					</div>\
+				</div>\
+				<div class='button_wrap button_h_s button_t_normal button_w_a help_close'><button id='via_tool_back'>Schliessen</button></div>\
+			</section>\
 		";
 		return result;
 	},
@@ -323,6 +424,14 @@ var View_via = {
 	},
 	
 	observe: function() {
+		if (Controller.selected_options.via_special) {
+			$('#top_vias').hide();
+			$('#special_vias').show();
+		} else {
+			$('#top_vias').show();
+			$('#special_vias').hide();
+		}
+		
 		Controller.radio_button($('.via_button'), function(selected_i) {
 			Controller.selected_options.via = selected_i;
 			$('span.cart_via').text(Controller.get_route().via[Controller.selected_options.via].name);
@@ -347,6 +456,29 @@ var View_via = {
 		Mobile.observe_button($('#via_back'), function() {
 			Controller.prev_screen();
 		});
+		
+		// via information screen
+		$('.via_choose').each(function(i, item) {
+			Mobile.observe_button($(item), function() {
+				Controller.selected_options.via = $(item).attr('data-via');
+				Controller.selected_options.via_special = true;
+				
+				$('#special_via').html("\
+					<div class='button_wrap button_h_m button_t_normal button_w_l'>\
+						<button class='via_button selected'>via "+Controller.get_route().via[Controller.selected_options.via].name+"</button>\
+					</div>\
+				");
+				
+				$('#top_vias').hide();
+				$('#special_via').show();
+				
+				View_static.render_box_via();
+				View_static.render_total();
+				View_static.handle_next_button();
+			
+				Controller.hide_information();
+			});
+		})
 	}
 	
 }
@@ -368,9 +500,9 @@ var View_option = {
 					<label>Anzahl Billette<br />Erwachsen mit Halbtax/Kind</label>\
 					<div class='button_container'>\
 						<div class='group_box ticket_count_halbtax_box'>\
-							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='decrease' id='decrease_halbtax'>-</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='decrease' id='decrease_halbtax'><img src='view/image/minus.svg' /></button></div>\
 							<div class='number ticket_halbtax_input'>"+Controller.selected_options.ticket_halbtax+"</div>\
-							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='increase' id='incerase_halbtax'>+</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='increase' id='incerase_halbtax'><img src='view/image/plus.svg' /></button></div>\
 						</div>\
 					</div>\
 				</div>\
@@ -378,9 +510,9 @@ var View_option = {
 					<label>Anzahl Billette<br />Erwachsene ohne Halbtax</label>\
 					<div class='button_container'>\
 						<div class='group_box ticket_count_normal_box'>\
-							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='decrease' id='decrease_normal'>-</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='decrease' id='decrease_normal'><img src='view/image/minus.svg' /></button></div>\
 							<div class='number ticket_normal_input'>"+Controller.selected_options.ticket_normal+"</div>\
-							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='increase' id='incerase_normal'>+</button></div>\
+							<div class='button_wrap button_h_m button_t_normal button_w_s'><button class='increase' id='incerase_normal'><img src='view/image/plus.svg' /></button></div>\
 						</div>\
 					</div>\
 				</div>\
@@ -389,8 +521,8 @@ var View_option = {
 				<div class='box_left'>\
 					<label>Fahrart</label>\
 					<div class='button_container radio_group'>\
-						<div class='button_wrap button_h_m button_t_normal button_w_m'><button class='direction_button "+(Controller.selected_options.back == false ? 'selected' : '')+"' id='option_direction_easy'>--></button></div>\
-						<div class='button_wrap button_h_m button_t_normal button_w_m'><button class='direction_button "+(Controller.selected_options.back == true ? 'selected' : '')+"' id='option_direction_retour'><--></button></div>\
+						<div class='button_wrap button_h_m button_t_normal button_w_m'><button class='direction_button "+(Controller.selected_options.back === 0 ? 'selected' : '')+"' id='option_direction_easy'><img src='view/image/einfach.svg' /></button></div>\
+						<div class='button_wrap button_h_m button_t_normal button_w_m'><button class='direction_button "+(Controller.selected_options.back === 1 ? 'selected' : '')+"' id='option_direction_retour'><img src='view/image/retour.svg' /></button></div>\
 					</div>\
 				</div>\
 				<div class='box_right'>\
@@ -409,10 +541,22 @@ var View_option = {
 		return result;
 	},
 	
-	render_information: function() { return '';	},
+	render_information: function() { 
+		return "\
+			<section class='content_full'>\
+				<h1>Informationen zu Billette für Kinder</h1>\
+				<p>Kinder bis 16 Jahren reisen zum halben Preis.</p>\
+				<p>Kinder <b>unter 6 Jahren</b> reisen zusammen mit einer Begleitperson <b>kostenlos</b>.<br />Bedingung ist, dass die Begleitperson einen gültigen Fahrausweis hat und mindestens 12 Jahre alt ist. Bis zu 4 Kinder können gratis mitgenommen. Bei Begleitpersonen ab 16 Jahren können bis zu 8 Kinder kostenlos mitreisen. Für jedes weitere Kind müssen Billette zum halben Preis gekauft oder allenfalls vorgesehene Mindestfahrpreise bezahlt werden.</p>\
+				<div class='button_wrap button_h_s button_t_normal button_w_a help_close'><button id='option_help_close'>Schliessen</button></div>\
+			</section>\
+		";	
+	},
 	render_tool: function() { return ''; },
 	
 	observe: function() {
+		Mobile.observe_button($('#option_help_close'), function() {
+			Controller.hide_information();
+		});
 
 		Controller.counter_element($('.ticket_count_halbtax_box'), (function(count) {
 			Controller.selected_options.ticket_halbtax = count;
@@ -449,7 +593,7 @@ var View_option = {
 		
 		
 		Controller.radio_button($('.direction_button'), (function(selected_i) {
-			Controller.selected_options.back = (selected_i == 1);
+			Controller.selected_options.back = (selected_i == 1 ? 1 : 0);
 			if (Controller.selected_options.back) {
 				$('div.cart_direction').removeClass('direction_easy');
 				$('div.cart_direction').addClass('direction_retour');
@@ -458,16 +602,17 @@ var View_option = {
 				$('div.cart_direction').removeClass('direction_retour');
 			}
 			
-			View_static.render_box_date();
+			View_static.render_box_option();
 			View_static.render_total();
+			View_static.handle_next_button();
 		}).bind(this));
 		
 		Controller.radio_button($('.sbb_class_button'), (function(selected_i) {
 			Controller.selected_options.sbb_class = (selected_i == 0 ? 1 : 2);
 			
-			$('span.cart_sbb_class').text(Controller.selected_options.sbb_class);
-			
+			View_static.render_box_option();
 			View_static.render_total();
+			View_static.handle_next_button();
 		}).bind(this));
 	}
 	
@@ -486,13 +631,16 @@ var View_date = {
 		result += "\
 			<section class='content_left'>\
 				<h1>Bitte wählen Sie Ihr Reisedatum</h1>\
+				<label>lorem ipsum</label>\
 		";
 		
 		
 		result += "\
 				<div class='button_container'>\
 					<div class='group_box'>\
-						<div class='button_wrap button_h_m button_t_normal button_w_l'><button class='selected' id='date_today_button'>"+View_static.render_date_formatted()+"</button></div>\
+						<div class='button_wrap button_h_m button_t_normal button_w_l'>\
+							<button id='date_today_button' class='"+(Controller.selected_options.date_today ? 'selected' : '')+"'>"+View_static.render_date_formatted()+"</button>\
+						</div>\
 						<div class='button_wrap button_h_m button_t_normal button_w_l'><button id='date_later_button'>Späteres Datum</button></div>\
 					</div>\
 				</div>\
@@ -508,8 +656,12 @@ var View_date = {
 	render_information: function() { return '';	},
 	render_tool: function() { return ''; },
 	observe: function() {
+		Mobile.observe_button($('#date_today_button'), function() {
+			Controller.selected_options.date_today = true;
+			$('#date_today_button').addClass('selected');
+			View_static.render_box_date();
+		});
 		
-		Controller.selected_options.date_today = true;
 	}
 	
 }
@@ -548,7 +700,7 @@ var View_pay = {
 	render: function() {
 		var result = '';
 		result += "\
-			<section class='content_full'>\
+			<section class='content_wide'>\
 				<h1>Sie können Ihre Billette jetzt bezahlen</h1>\
 				<label>Mögliche Zahlarten</label>\
 				<div class='box_left'>\
@@ -602,18 +754,18 @@ var View_static = {
 						<div class='column_2'>via <span class='cart_via'></span></div>\
 					</div>\
 					<div class='box box_option'>\
-						<div class='column_1'>Billette</div>\
+						<div class='column_1'>Anzahl Billette</div>\
 						<div class='column_2'>\
 							<div class='cart_ticket_halbtax'><span class='cart_ticket_halbtax_count'></span> x Halbtax / Kind</div>\
 							<div class='cart_ticket_normal'><span class='cart_ticket_normal_count'></span> x Erwachsen</div>\
 						</div>\
-						<div class='column_1' style='clear:right;'>Fahrart</div>\
-						<div class='column_2'><div class='cart_direction'>icon</div></div>\
-						<div class='column_1'>Klasse</div>\
-						<div class='column_2'><div><span class='cart_sbb_class'></span>. Klasse</div></div>\
+						<div class='column_1 column_1_fahrart' style='clear:right;'>Fahrart</div>\
+						<div class='column_2'><div class='cart_direction'></div></div>\
+						<div class='column_1 klasse'>Klasse</div>\
+						<div class='column_2'><span class='cart_sbb_class'></span>. Klasse</div>\
 					</div>\
 					<div class='box box_date'>\
-						<div class='column_1'>Gültig</div>\
+						<div class='column_1'>Gültigkeit</div>\
 						<div class='column_2'><div class='cart_date'></div></div>\
 					</div>\
 					<div class='box box_total'>\
@@ -694,7 +846,7 @@ var View_static = {
 			Controller.show_information('information');
 		});
 		Mobile.observe_button($('#static_pay'), function() {
-			Controller.next_screen();
+			Controller.next_screen(false);
 		});
 		
 		
@@ -707,6 +859,11 @@ var View_static = {
 		clock.boss = StationClock.RedBoss;
 		clock.minuteHandBehavoir = StationClock.BouncingMinuteHand;
 		clock.secondHandBehavoir = StationClock.OverhastySecondHand;
+		
+		var time_new = new Date(Date.UTC(24,05,05,5,29));
+		var time    = new Date();
+      
+		clock.timedifferent = (time_new - time);
 		
 		window.setInterval(function() { clock.draw() }, 50);
 		
@@ -742,6 +899,16 @@ var View_static = {
 		
 		
 		// footer cancel button update
+		if (Controller.current_screen == 'screensaver') {
+			$('footer').hide();
+			$('.content_right').hide();
+			// $('header').hide();
+		} else {
+			$('footer').show();
+			$('.content_right').show();
+			// $('header').show();
+		}
+		
 		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary', 'pay']) > -1) {
 			$('#static_cancel').show();
 		} else {
@@ -749,7 +916,7 @@ var View_static = {
 		}
 		
 		// footer help button update
-		if ($.inArray(Controller.current_screen, ['via', 'option', 'date', 'summary']) > -1) {
+		if ($.inArray(Controller.current_screen, ['option']) > -1) {
 			$('#static_help').show();
 		} else {
 			$('#static_help').hide();
@@ -785,10 +952,14 @@ var View_static = {
 				$('#static_next').show();
 			}
 		} else if (Controller.current_screen == 'option') {
-			if (Controller.selected_options.ticket_halbtax == 0 && Controller.selected_options.ticket_normal == 0) {
-				$('#static_next').hide();
-			} else {
+
+			if (
+				(Controller.selected_options.ticket_halbtax > 0 || Controller.selected_options.ticket_normal > 0) && 
+				(Controller.selected_options.sbb_class !== false && Controller.selected_options.back !== false)
+			) {
 				$('#static_next').show();
+			} else {
+				$('#static_next').hide();
 			}
 		} else if (Controller.current_screen == 'summary' || Controller.current_screen == 'pay') {
 			$('#static_next').hide();
@@ -808,7 +979,12 @@ var View_static = {
 	},
 	
 	render_box_option: function() {
-		if (Controller.selected_options.ticket_normal == 0 && Controller.selected_options.ticket_halbtax == 0) {
+		if (
+			Controller.selected_options.ticket_normal == 0 && 
+			Controller.selected_options.ticket_halbtax == 0 &&
+			Controller.selected_options.sbb_class === false &&
+			Controller.selected_options.back === false
+		) {
 		    $('.box_option').hide();
 		} else {
 		    $('.cart_ticket_halbtax').show();
@@ -824,17 +1000,30 @@ var View_static = {
 			    $('.cart_ticket_normal_count').text(Controller.selected_options.ticket_normal);
 		    }
 		    
-		    // console.log(Controller.selected_options.back);
-		    if (Controller.selected_options.back) {
-				$('div.cart_direction').removeClass('direction_easy');
-				$('div.cart_direction').addClass('direction_retour');
-			} else {
-				$('div.cart_direction').addClass('direction_easy');
-				$('div.cart_direction').removeClass('direction_retour');
-			}
+		    $('.cart_sbb_class').parent('.column_2').hide();
+		    if (Controller.selected_options.sbb_class !== false) {
+			    $('.cart_sbb_class').text(Controller.selected_options.sbb_class);
+			    $('.cart_sbb_class').parent('.column_2').show();
+		    }
 		    
-		    $('.cart_sbb_class').text(Controller.selected_options.sbb_class);
-		    
+		    $('div.cart_direction').hide();
+		    if (Controller.selected_options.back !== false) {
+			    $('.cart_sbb_class').text(Controller.selected_options.sbb_class);
+			    $('.cart_sbb_class').show();
+			    
+			    if (Controller.selected_options.back === 1) {
+				    $('div.column_1_fahrart').removeClass('column_direction_easy');
+				    $('div.cart_direction').removeClass('direction_easy');
+				    $('div.cart_direction').addClass('direction_retour');
+				} else {
+				    $('div.column_1_fahrart').addClass('column_direction_easy');
+				    $('div.cart_direction').addClass('direction_easy');
+				    $('div.cart_direction').removeClass('direction_retour');
+				}
+				
+				$('div.cart_direction').show();
+		    }
+
 		    $('.box_option').show();
 		}
 	},
@@ -876,9 +1065,11 @@ var View_static = {
 		    var back_day = (back_date.getDate());
 		    var back_date_formatted = ((back_day < 10 ? "0"+back_day : back_day)+"."+(back_month < 10 ? "0"+back_month : back_month)+"."+back_date.getFullYear());
 		
-		    date_formatted = "Gültig von "+date_formatted+" bis "+back_date_formatted;
+		    // date_formatted = "Gültig von "+date_formatted+" bis "+back_date_formatted;
+		    date_formatted = "Gültig heute, "+date_formatted;
 		} else {
-		    date_formatted = "Gültig Heute ("+date_formatted+")";
+		    // date_formatted = "Gültig am "+date_formatted;
+		    date_formatted = "Gültig heute, "+date_formatted;
 		}
 		
 		return date_formatted;

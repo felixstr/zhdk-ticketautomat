@@ -36,7 +36,6 @@ var Mobile = {
 			element.on('touchend', function() {
 				element.removeClass('touch');
 				if (!reset) {
-					console.log('mobile', element);
 					callback(element);
 				}				
 			});

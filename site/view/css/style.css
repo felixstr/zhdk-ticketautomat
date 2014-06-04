@@ -42,6 +42,10 @@ footer {
 footer {
 	bottom: 0;
 	top: auto;
+	box-shadow: -1px -1px 2px rgba(221,221,221,0.8);
+}
+header {
+	box-shadow: 1px 1px 2px rgba(221,221,221,0.8);
 }
 
 section#slideContainer {
@@ -96,16 +100,23 @@ body.slideInRight section#slideRightContainer {
 }
 
 /* content */
+.content_full,
 .content_right,
 .content_left,
-.content_full {
+.content_wide {
 	position: absolute;
 	top: 112px;
 	bottom: 112px;
 	background: white;
 	padding: 16px;
 	
-	border-radius: 5px;
+	border-radius: 8px;
+}
+.content_full {
+	top: 16px;
+	bottom: 16px;
+	left: 16px;
+	right: 16px;
 }
 .content_right {
 	right: 32px;
@@ -118,11 +129,11 @@ body.screen-start .content_right {
 	left: 32px;
 	top: 112px;
 	bottom: 112px;
-	width: 586px;
+	width: 584px;
 	
-	box-shadow: 0px 7px 15px rgba(0,0,0,0.4);
+	box-shadow: 0px 10px 20px rgba(2,1,2,0.25);
 }
-.content_full {
+.content_wide {
 	left: 32px;
 	width: 960px;
 }
@@ -136,13 +147,14 @@ button { border: none; cursor: pointer; }
 .button_wrap button {
 	font-size: 18px;
 	box-shadow: 0px 3px 0px rgba(0,0,0,0.8);
-	border-radius: 5px;
+	border-radius: 8px;	
+	padding-top: 3px;
 }
 .button_wrap button.active,
 .button_wrap button.touch {
 	box-shadow: none;
 	box-shadow: 0px 2px 0px rgba(0,0,0,0.8);
-	padding-top: 1px;
+	padding-top: 5px;
 }
 
 
@@ -176,7 +188,7 @@ button { border: none; cursor: pointer; }
 }
 
 .button_wrap.button_w_m2 button {
-	width: 264px;
+	width: 288px;
 }
 
 .button_wrap.button_w_l,
@@ -203,11 +215,14 @@ button { border: none; cursor: pointer; }
 	box-shadow: none;
 }
 
-/* type second / info */
+/* type second / info / key */
+.button_wrap.button_t_key button,
 .button_wrap.button_t_second button {
 	background: #a6a6a6;
 	color: white;
 }
+.button_wrap.button_t_key button.touch,
+.button_wrap.button_t_key button.active,
 .button_wrap.button_t_second button.touch,
 .button_wrap.button_t_second button.active {
 	background: #828282;
@@ -228,14 +243,9 @@ button { border: none; cursor: pointer; }
 	margin-right: 16px;
 }
 .button_wrap.button_t_key button {
-	background: #A6A6A6;
-	color: #272829;
-	font-size: 25px;
-	font-weight: 400;
-}
-.button_wrap.button_t_key button.touch,
-.button_wrap.button_t_key button.active {
-	background: #828282;
+	font-size: 30px;
+	font-weight: 300;
+	padding-top: 3px;
 }
 .button_wrap.button_t_key button.inactive {
 	box-shadow: none;
@@ -249,17 +259,13 @@ button { border: none; cursor: pointer; }
 	background: #EBEBEB;
 	padding: 16px;
 		
-	border-radius: 5px;
+	border-radius: 8px;
 }
 
-/*
-.button_container button {
-	margin-bottom: 16px;
+#tabs .input button,
+.content_left button {
+	font-weight: 500;
 }
-.button_container button:last-of-type {
-	margin-bottom: 0;
-}
-*/
 
 
 /* text */
@@ -282,6 +288,8 @@ label {
 	display: block;
 	margin-bottom: 16px;
 	line-height: 95%;
+	float: left;
+	width: 100%;
 }
 
 /* header */
@@ -322,14 +330,28 @@ footer .button_wrap {
 	margin-right: 16px;
 }
 
+/* help screen */
+.help_close {
+	position: absolute;
+	left: 16px;
+	bottom: 16px;
+}
+.content_full p {
+	font-size: 20px;
+	line-height: 26px;
+	margin-bottom: 10px;
+}
+
+
 /* static content_right */
 .content_right .ticket_selection {
 	float: left;
 	width: 192px;
 	height: 512px;
 	background: #003399;
-	border-radius: 5px;
+	border-radius: 8px;
 	padding: 16px;
+	padding-top: 12px;
 	position: relative;
 }
 
@@ -358,8 +380,8 @@ body.scroll-backward .content_right .ticket_selection {
 	float: left;
 	color: white;
 	border-bottom: 1px solid white;
-	margin-top: 12px;
-	padding-bottom: 12px;
+	margin-top: 11px;
+	padding-bottom: 11px;
 	font-size: 17px;
 	line-height: 22px;
 	width: 100%;
@@ -372,6 +394,7 @@ body.scroll-backward .content_right .ticket_selection {
 	width: 0;
 	overflow: hidden;
 	float: left;
+	display: none;
 }
 .content_right .ticket_selection .box .column_2 {
 	width: 100%;
@@ -379,7 +402,7 @@ body.scroll-backward .content_right .ticket_selection {
 }
 .content_right .ticket_selection .box_total {
 	position: absolute;
-	bottom: 16px;
+	bottom: 14px;
 	width: 168px;
 	border: none;
 	padding: 0;
@@ -390,6 +413,21 @@ body.scroll-backward .content_right .ticket_selection {
 .cart_total_chf {
 	font-weight: bold;
 	font-size: 20px;
+	margin-bottom: 4px;
+}
+.cart_direction {
+	width: 100%;
+	background-position: left center;
+}
+.direction_easy {
+	background-image: url(../image/einfachklein.svg);
+	background-repeat: no-repeat;
+	height: 35px;
+}
+.direction_retour {
+	background-image: url(../image/retourklein.svg);
+	background-repeat: no-repeat;
+	height: 42px;
 }
 
 body.screen-summary .content_right {
@@ -399,14 +437,28 @@ body.screen-summary .content_right .ticket_selection {
 	width: 780px;
 	height: 448px;
 }
+body.screen-date .content_right .ticket_selection .column_1 {
+	display: block;
+}
 body.screen-summary .content_right .ticket_selection .column_1 {
-	width: 30%;
+	display: block;
+	width: 20%;
 }
 body.screen-summary .content_right .ticket_selection .column_2 {
-	width: 70%;
+	width: 80%;
 }
 body.screen-summary .content_right .box_total {
 	width: 768px;
+}
+body.screen-summary .content_right .box_total .column_1 {
+	font-size: 20px;
+}
+body.screen-summary .content_right .box_option .column_1_fahrart {
+	margin-top: 6px;
+	margin-bottom: 14px;
+}
+body.screen-summary .content_right .box_option .column_direction_easy {
+	margin-bottom: 6px;
 }
 
 .content_right nav {
@@ -423,6 +475,8 @@ body.screen-summary .content_right .box_total {
 	position: absolute;
 	bottom: 3px;
 }
+
+
 /* static slider */
 .content_right nav div.slider_wrapper {
 	position: absolute;
@@ -461,7 +515,7 @@ body.screen-summary .content_right .box_total {
 	color: white;
 	font-size: 14px;
 	padding-top: 1px;
-	font-weight: 500;
+	font-weight: 600;
 }
 .content_right nav div.bullet_current {
 	background: orange;
@@ -520,11 +574,23 @@ nav div.bullet {
 }
 
 
+/* screen: screensaver */
+#tap_overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: url(../image/bg_start2-werbung.jpg);
+	background-size: 100%;
+	background-position: center center;
+}
 
 /* screen: start */
 section#start_wrapper {
-	background: url(../image/bg_start.jpg);
-	background-size: cover;
+	background: url(../image/bg_start2.jpg);
+	background-size: 100%;
+	background-position: center center;
 	height: 100%;
 	width: 100%;
 	position: relative;
@@ -537,7 +603,7 @@ section#tabs {
 	margin-top: 32px;
 	overflow: hidden;
 	
-	border-radius: 5px;
+	border-radius: 8px;
 }
 section#tabs ul {
 	width: 100%;
@@ -606,7 +672,7 @@ section#start_wrapper .input {
 	padding: 8px;
 	border: 1px solid #272829;
 	
-	border-radius: 5px;
+	border-radius: 8px;
 	
 }
 section#start_wrapper .input .button_wrap {
@@ -619,12 +685,18 @@ section#start_wrapper .input .button_wrap button {
 section#start_wrapper .input .value {
 	position: absolute;
 	font-size: 30px;
-	margin-top: 4px;
+	margin-top: 6px;
 	margin-left: 6px;
 }
 
-
-
+#tab_2_content .button_container {
+	padding-right: 0;
+	padding-bottom: 0;
+}
+#tab_2_content .button_wrap {
+	margin-right: 16px;
+	margin-bottom: 16px;
+}
 
 
 /* screen: keyboard */
@@ -634,7 +706,7 @@ section#start_wrapper .input .value {
 	left: 16px;
 	width: 992px;
 	background: white;
-	border-radius: 5px;
+	border-radius: 8px;
 	padding: 16px;
 }
 .keyboard_bottom {
@@ -643,23 +715,23 @@ section#start_wrapper .input .value {
 	left: 16px;
 	width: 992px;
 	background: #F8F8F8;
-	border-radius: 5px;
+	border-radius: 8px;
 	padding-bottom: 16px;
 }
 
 .keyboard_top h1 {
-	margin-bottom: 10px;
+	margin-bottom: 17px;
 }
 .keyboard_top .textfield {
 	background: white;
 	padding: 12px;
 	border: 1px solid black;
-	border-radius: 5px;
+	border-radius: 8px;
 	font-size: 30px;
 	color: #272829;
 }
 .keyboard_top label {
-	margin-bottom: 8px;
+	margin-bottom: 6px;
 	margin-top: 16px;
 }
 .keyboard_top .result {
@@ -670,9 +742,15 @@ section#start_wrapper .input .value {
 }
 .keyboard_top button {
 	text-align: left;
-	font-size: 25px;
+	font-size: 30px;
 	font-weight: 300;	
+	padding-top: 3px;
 }
+.keyboard_top button.active,
+.keyboard_top button.touch {
+	padding-top: 5px;
+}
+
 
 .keyboard_bottom .row {
 	float: left;
@@ -697,16 +775,12 @@ section#start_wrapper .input .value {
 .keyboard_bottom .row_4 .button_wrap button {
 	text-align: center;
 }
-.keyboard_bottom #start_keyboard_close {
-	position: absolute;
-	bottom: 16px;
-	left: 16px;
+.keyboard_bottom button.del img {
+	width: 35px;
 }
-
 
 /* screen: via */
 body.screen-via .button_container {
-	height: 415px;
 	position: relative;
 	padding-top: 0;
 }
@@ -716,17 +790,56 @@ body.screen-via .button_container .button_wrap {
 #button_via_info {
 	float: right;
 }
-#button_different_via {
-	position: absolute;
-	bottom: 16px;
-	width: 522px;
+body.screen-via .content_left > label:last-of-type {
+	margin-top: 40px;
 }
 
+body.screen-via .table_wrap {
+	float: left;
+	width: 100%;
+	background: #EBEBEB;
+	padding: 16px;
+	padding-top: 11px;
+		
+	border-radius: 8px;
+}
+body.screen-via .table_wrap table {
+	float: left;
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 16px;
+}
+body.screen-via .table_wrap table th {
+	font-weight: 400;
+	font-size: 20px;
+	text-align: left;
+	border-bottom: 1px solid #272829;
+	padding-bottom: 11px;
+}
+body.screen-via .table_wrap table th.via { width: 312px; }
+body.screen-via .table_wrap table th.time { width: 134px; }
+body.screen-via .table_wrap table th.duration { width: 134px; }
+body.screen-via .table_wrap table th.change { width: 134px; }
+body.screen-via .table_wrap table th.button { width: 208px; }
 
+body.screen-via .table_wrap table td {
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #272829;
+	font-size: 18px;
+}
+body.screen-via .table_wrap table td .button_t_important {
+	float: right;
+}
+
+body.screen-via .table_wrap #via_later {
+	float: right;
+}
 
 /* screen: option */
 body.screen-option label {
-	line-height: 25px;
+	line-height: 26px;
+	margin-bottom: 10px;
 }
 .content_left .box_left, 
 .content_left .box_right {
@@ -748,10 +861,12 @@ body.screen-option label {
 	text-align: center;
 	background: #003399;
 	color: white;
-	padding: 8px 0;
-	font-size: 40px;
-	border-radius: 5px;
+	border-radius: 8px;
 	margin: 0 16px;
+	
+	padding: 2px 0;
+	font-size: 48px;
+	font-weight: 300;
 }
 .group_box.empty .number {
 	background: white;
@@ -763,28 +878,11 @@ body.screen-option label {
 	margin-right: 16px;
 }
 
-button#option_direction_easy {
-	background-image: url(../image/einfach.svg);
-	background-repeat: no-repeat;
-	background-position: center center;
-	text-indent: -1000px;
+.group_box button img {
+	margin-top: 6px;
 }
-button#option_direction_retour {
-	background-image: url(../image/retour.svg);
-	background-repeat: no-repeat;
-	background-position: center center;
-	text-indent: -1000px;
-}
-div.direction_easy,
-div.direction_retour {
-	background-image: url(../image/retour.svg);
-	background-repeat: no-repeat;
-	background-position: left center;
-	background-size: 20px;
-	text-indent: -1000px;
-}
-div.direction_easy {
-	background-image: url(../image/einfach.svg);
+.radio_group button img {
+	margin-top: 4px;
 }
 
 
@@ -831,13 +929,13 @@ body.screen-pay .icon_kreditkarte {
 	width: 100%;
 	height: 229px;
 	
-	border-radius: 5px;
+	border-radius: 8px;
 }
 body.screen-pay .icon_bargeld {
-	background-image: url(../image/icon_cash.png);
+	/*background-image: url(../image/icon_cash.png);*/
 }
 body.screen-pay .icon_kreditkarte {
-	background-image: url(../image/icon_kk.png);
+	/*background-image: url(../image/icon_kk.png);*/
 }
 
 body.screen-pay .box_bottom {
@@ -845,13 +943,14 @@ body.screen-pay .box_bottom {
 	float: left;
 	width: 100%;
 	margin-top: 16px;
-	border-radius: 5px;
+	border-radius: 8px;
 	height: 124px;
 	padding: 16px;
 	color: white;
 }
 body.screen-pay .box_bottom label {
 	float: left;
+	width: 116px;
 }
 body.screen-pay .box_bottom .total {
 	float: left;
@@ -859,9 +958,117 @@ body.screen-pay .box_bottom .total {
 }
 
 
-/*
-body.version-2 .content_right,
-body.version-2 .content_left {
-	border-radius: 2px;
+
+/* css variante: 3d */
+body.style-button-3d .button_wrap.button_t_normal button {
+	background: #666;
+	color: white;
+	
+	background-image: linear-gradient(to top, #555555, #666);
+	box-shadow: 0px 3px 0px #383838;
 }
-*/
+body.style-button-3d .button_wrap.button_t_normal button.touch,
+body.style-button-3d .button_wrap.button_t_normal button.active {
+	background: #4e4e4e;
+	box-shadow: 0px 2px 0px #383838;
+}
+body.style-button-3d .button_wrap.button_t_normal button.selected {
+	background: #003399;
+	box-shadow: none;
+}
+
+body.style-button-3d .button_wrap.button_t_important button {
+	background: #EE0000;
+	color: white;
+	
+	background-image: linear-gradient(to top, #d60000, #EE0000);
+	box-shadow: 0px 3px 0px #a70000;
+}
+body.style-button-3d .button_wrap.button_t_important button.touch,
+body.style-button-3d .button_wrap.button_t_important button.active {
+	background: #B20000;
+	box-shadow: 0px 2px 0px #a70000;
+}
+body.style-button-3d .button_wrap.button_t_key button,
+body.style-button-3d .button_wrap.button_t_second button {
+	background: #a6a6a6;
+	color: white;
+	
+	background-image: linear-gradient(to top, #959595, #a6a6a6);
+	box-shadow: 0px 3px 0px #747474;
+}
+body.style-button-3d .button_wrap.button_t_key button.touch,
+body.style-button-3d .button_wrap.button_t_key button.active,
+body.style-button-3d .button_wrap.button_t_second button.touch,
+body.style-button-3d .button_wrap.button_t_second button.active {
+	background: #959595;
+	box-shadow: 0px 2px 0px #747474;
+}
+body.style-button-3d .button_wrap.button_t_key button.inactive {
+	box-shadow: none;
+	background: #DDDDDD;
+	color: #9C9D9D;
+}
+
+
+
+/* css variante: blau */
+body.style-blue section#tabs ul li button {
+	background: #6B7786;
+	color: white;
+}
+body.style-blue section#tabs ul li.current button {
+	background: white;
+	color: #272829;
+}
+
+body.style-blue .button_wrap.button_t_normal button {
+	background: #6B7786;
+	color: white;
+}
+body.style-blue .button_wrap.button_t_normal button.touch,
+body.style-blue .button_wrap.button_t_normal button.active {
+	background: #566373;
+}
+body.style-blue .button_wrap.button_t_normal button.selected {
+	background: #003399;
+}
+
+
+body.style-blue .button_wrap.button_t_second button {
+	background: #A6ADB6;
+	color: white;
+}
+body.style-blue .button_wrap.button_t_second button.touch,
+body.style-blue .button_wrap.button_t_second button.active {
+	background: #6B7786;
+}
+
+body.style-blue .content_right nav div.bullet,
+body.style-blue .content_right nav div.line_front { 
+	background: #6B7786; 
+}
+
+
+
+/* css variante: kleiner radius */
+body.style-radius-v1 .content_right, 
+body.style-radius-v1 .content_left, 
+body.style-radius-v1 .content_wide,
+body.style-radius-v1 .content_full,
+body.style-radius-v1 .keyboard_top,
+body.style-radius-v1 .keyboard_bottom,
+body.style-radius-v1 section#tabs,
+body.style-radius-v1 section.ticket_selection {
+	border-radius: 8px;
+}
+
+body.style-radius-v1 .button_wrap button,
+body.style-radius-v1 .button_container,
+body.style-radius-v1 .icon_bargeld,
+body.style-radius-v1 .icon_kreditkarte,
+body.style-radius-v1 .box_bottom,
+body.style-radius-v1 section#start_wrapper .input {
+	border-radius: 8px;
+	/*border-radius: 3px;*/
+}

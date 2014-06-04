@@ -72,6 +72,8 @@ StationClock.ElasticBouncingSecondHand = 2;
 StationClock.OverhastySecondHand       = 3;
 
 
+
+
 function StationClock(clockId) {
   this.clockId = clockId; 
   this.radius  = 0;
@@ -111,6 +113,9 @@ function StationClock(clockId) {
   this.secondHandAnimationStep = 0;
   this.lastMinute = 0;
   this.lastSecond = 0;
+  
+  // special
+  this.timedifferent = 0;
 };
 
 StationClock.prototype.draw = function() {
@@ -209,6 +214,8 @@ StationClock.prototype.draw = function() {
 
       // get current time
       var time    = new Date();
+      var newTime = time.getTime() + this.timedifferent;
+      time    = new Date(newTime);
       var millis  = time.getMilliseconds() / 1000.0;
       var seconds = time.getSeconds();
       var minutes = time.getMinutes();
