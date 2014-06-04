@@ -131,7 +131,8 @@ var Controller = {
 		{ key: 'kaltbrunn', name: 'Kaltbrunn' },
 		{ key: 'krummenau', name: 'Krummenau' },
 		{ key: 'kreuzlingen', name: 'Kreuzlingen' },
-		{ key: 'kreuzstrasse', name: 'Kreuzstrasse' }
+		{ key: 'kreuzstrasse', name: 'Kreuzstrasse' },
+		{ key: 'xion', name: 'Xion' }
 	],
 	
 	selected_options_default: {
@@ -369,8 +370,8 @@ var Controller = {
 	},
 	
 	preload_images: function() {
-	/*
-		var images = ['bg_start2-werbung.jpg','bg_start2.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg',]
-		*/
+	
+		var images = ['bg_start2-werbung.jpg','bg_start2.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg'];
+		
 	}
 }

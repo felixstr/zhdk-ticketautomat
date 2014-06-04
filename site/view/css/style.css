@@ -922,7 +922,7 @@ body.screen-pay .box_right {
 body.screen-pay .icon_bargeld,
 body.screen-pay .icon_kreditkarte {
 	background: #ebebeb;
-	background-size: 220px;
+	background-size: 424px;
 	background-repeat: no-repeat;
 	background-position: center center;
 	float: left;
@@ -932,10 +932,10 @@ body.screen-pay .icon_kreditkarte {
 	border-radius: 8px;
 }
 body.screen-pay .icon_bargeld {
-	/*background-image: url(../image/icon_cash.png);*/
+	background-image: url(../image/icon_bar.svg);
 }
 body.screen-pay .icon_kreditkarte {
-	/*background-image: url(../image/icon_kk.png);*/
+	background-image: url(../image/icon_karte.svg);
 }
 
 body.screen-pay .box_bottom {
