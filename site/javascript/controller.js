@@ -148,6 +148,8 @@ var Controller = {
 	selected_options: {},
 	
 	init: function() {
+		this.preload_images();
+	
 		this.selected_options = this.selected_options_default;
 		this.selected_options = jQuery.extend(true, {}, this.selected_options_default);
 		this.render_view(this.current_screen, 'screen_active');
@@ -364,5 +366,11 @@ var Controller = {
 		
 		// console.log(result);
 		return result;
+	},
+	
+	preload_images: function() {
+	/*
+		var images = ['bg_start2-werbung.jpg','bg_start2.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg','bg_start2-werbung.jpg',]
+		*/
 	}
 }
